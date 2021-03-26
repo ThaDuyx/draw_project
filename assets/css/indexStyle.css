@@ -1,4 +1,55 @@
 .headerText {
     text-align: center;
-    padding-top: 50px;
+    padding-top: 250px;
+    font-size: 68px;
+}
+
+.container {
+    margin: auto;
+    width: 20%;
+    background-color: #888888;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#fname {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 0px;
+
+}
+
+.submit {
+    display: block;
+    margin: auto;
+    padding: 10px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 0px;
+    background-color: #43819b;
+    color: white;
+}
+
+.submit:hover {
+    cursor: pointer;
+    background-color: #147a9b;
+}
+
+.createRoom {
+    text-decoration: underline;
+    text-align: center;
+    display: block;
+    margin: auto;
+    padding: 10px;
+}
+
+.createRoom:hover {
+    cursor: pointer;
+    color: #147a9b;
 }
