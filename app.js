@@ -10,7 +10,7 @@ app.use(express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
   //req.addListener('end', function (){fileServer.serve(request, response);})
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/game.html');
 });
 
 io.on('connection', (socket) => {
