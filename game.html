@@ -12,13 +12,13 @@
         <![endif]-->
     </head>
 
-    <body onload="resizeCanvas()">
+    <body onload="resizeCanv()">
         <div id="cursors">
             <!-- The mouse pointers will be created here -->
         </div>
 
 
-        <canvas id="paper" >
+        <canvas onresize="resizeCanv()" id="paper" >
             Your browser needs to support canvas for this to work!
         </canvas>
 
@@ -41,6 +41,12 @@
             var canvs = document.getElementById("paper");
             canvs.width = window.innerWidth * .75;
             canvs.height = window.innerHeight * .5;
+        }
+
+        function resizeCanv() {
+            var canvs = document.getElementById("paper");
+            canvs.width = window.innerWidth * .75;
+            canvs.height = canvs.width * .5;
         }
     </script>
 
