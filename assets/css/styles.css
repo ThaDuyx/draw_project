@@ -154,3 +154,12 @@ footer a i b{
 	font-weight: normal;
 }
 
+.canvasRezise{
+
+}
+
+canvas{
+	width: 100%;
+	height: 100%;
+}
+
