@@ -15,7 +15,7 @@ $(function(){
 		ctx = canvas[0].getContext('2d'),
 		instructions = $('#instructions');
 
-	var rectangle = canvas.getBoundingClientRect();
+	//var rectangle = canvas.getBoundingClientRect();
 
 	
 	// Generate an unique ID
