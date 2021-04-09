@@ -164,16 +164,6 @@ footer a i b{
 	border:1px solid #000000;
 }
 
-#stage {
-	width:100%;
-	margin: 0 auto;
-	padding: 0;
-}
 
-#stage canvas, #overlay {
-	position: absolute;
-	margin: 0 auto;
-	padding: 0;
-}
 
 
