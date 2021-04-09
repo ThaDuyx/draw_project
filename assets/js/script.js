@@ -16,6 +16,8 @@ $(function(){
 		instructions = $('#instructions');
 
 	//var rectangle = canvas.getBoundingClientRect();
+    var myCanvas = doc.getElementById('paper');
+    var rectangle = myCanvas.getBoundingClientRect();
 
 	
 	// Generate an unique ID
