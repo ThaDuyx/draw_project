@@ -47,7 +47,7 @@ $(function(){
 			// the previous position of this user's mouse pointer
 
 			
-			drawLine(50-clients[data.id].x, 50-clients[data.id].y, 50-data.x, 50-data.y);
+			drawLine(clients[data.id].x-50, clients[data.id].y-50, data.x-50, data.y-50);
 		}
 		
 		// Saving the current client state
