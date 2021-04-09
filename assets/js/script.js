@@ -49,7 +49,7 @@ $(function(){
 			// Draw a line on the canvas. clients[data.id] holds
 			// the previous position of this user's mouse pointer
 			
-			drawLine(clients[data.id].x+rectangle.x, clients[data.id].y+rectangle.y, data.x+rectangle.x, data.y+rectangle.y);
+			drawLine(clients[data.id].x, clients[data.id].y, data.x, data.y);
 		}
 		
 		// Saving the current client state
