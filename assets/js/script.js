@@ -47,7 +47,7 @@ $(function(){
 			// the previous position of this user's mouse pointer
 
 			
-			drawLine(canvas.offsetLeft-clients[data.id].x, canvas.offsetTop-clients[data.id].y, canvas.offsetLeft-data.x, canvas.offsetTop-data.y);
+			drawLine(50-clients[data.id].x, 50-clients[data.id].y, 50-data.x, 50-data.y);
 		}
 		
 		// Saving the current client state
