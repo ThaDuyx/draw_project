@@ -27,6 +27,9 @@ $(function(){
 	//var socket = io.connect(url);
 	var socket = io();
 
+	canvas.style.width='10%';
+	canvas.style.height='10%';
+
 	socket.on('moving', function (data) {
 		
 		if(! (data.id in clients)){
