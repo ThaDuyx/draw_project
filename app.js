@@ -10,13 +10,26 @@ app.use(express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
   //req.addListener('end', function (){fileServer.serve(request, response);})
+  res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/game.html', (req, res) => {
   res.sendFile(__dirname + '/game.html');
 });
 
 io.on('connection', (socket) => {
+  //joining room
+  socket.on('join', roomName => {
+    console.log(roomName);
+    socket.join(roomName);
+    socket.to(roomName).emit('user joined', socket.id);
+  });
+  //drawing
   socket.on('mousemove', data => {
-    io.emit('moving', data);});
+    io.emit('moving', data);
+  });
 });
+
 
 http.listen(port, () => {
   console.log(`Socket.IO server running at http://localhost:${port}/`);
