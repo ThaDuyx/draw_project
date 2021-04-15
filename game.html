@@ -58,6 +58,8 @@
         <script>
             $('#messages').on('DOMNodeInserted', 'li', function(e) {
                 console.log(e);
+                $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
+
             });
 
             $('.add').click(function(){
