@@ -29,23 +29,24 @@
             <!-- The mouse pointers will be created here -->
         </div>
 
+        <div class="fluid-container">
+            <canvas  id="paper" width="1000" height="650">
+                Your browser needs to support canvas for this to work!
+            </canvas>
 
-        <canvas  id="paper" width="1000" height="650">
-            Your browser needs to support canvas for this to work!
-        </canvas>
 
+            <!--<hgroup id="instructions">
+                <h1>Draw anywhere!</h1>
+                <h2>You will see everyone else who's doing the same.</h2>
+                <h3>Tip: if the stage gets dirty, simply reload the page</h3>
+            </hgroup>-->
 
-        <!--<hgroup id="instructions">
-            <h1>Draw anywhere!</h1>
-            <h2>You will see everyone else who's doing the same.</h2>
-            <h3>Tip: if the stage gets dirty, simply reload the page</h3>
-        </hgroup>-->
-
-        <div id="chat-container">
-            <ul id="messages"></ul>
-            <form id="form" action="">
-                <input id="input" autocomplete="off" /><button class="add">Send</button>
-            </form>
+            <div id="chat-container">
+                <ul id="messages"></ul>
+                <form id="form" action="">
+                    <input id="input" autocomplete="off" /><button class="add">Send</button>
+                </form>
+            </div>
         </div>
 
         <!-- JavaScript includes. Notice that socket.io.js is served by node.js -->
