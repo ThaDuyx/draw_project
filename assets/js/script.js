@@ -25,7 +25,7 @@ $(function(){
 	var cursors = {};
 
 	//var socket = io.connect(url);
-	var socket = io();
+	//var socket = io();
 
 	socket.on('moving', function (data) {
 		
@@ -90,7 +90,6 @@ $(function(){
 		if(drawing){
 			
 			//drawLine(prev.x, prev.y, e.pageX, e.pageY);
-			
 			prev.x = e.pageX;
 			prev.y = e.pageY;
 		}
@@ -98,7 +97,7 @@ $(function(){
 
 	// Remove inactive clients after 10 seconds of inactivity
 	setInterval(function(){
-		
+
 		for(ident in clients){
 			if($.now() - clients[ident].updated > 10000){
 				
@@ -119,4 +118,10 @@ $(function(){
 		ctx.stroke();
 	}
 
+});
+
+$("#createRoom").click(function() {
+	var socket = io();
+	var roomName = $("#fname").val();
+	socket.emit('join', roomName)
 });
