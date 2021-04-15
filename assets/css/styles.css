@@ -163,4 +163,15 @@ footer a i b{
 #paper{
 	background:url('../img/bg.png') repeat #e4e4e4;
 	border:4px solid #000000;
+	float: left;
+}
+
+#messages {
+	list-style-type: none;
+	border: 2px solid red;
+	display: grid;
+	padding-top: 50px;
+	height: 650px;
+	overflow: auto;
+	display: block;
 }
