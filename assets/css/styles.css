@@ -172,4 +172,5 @@ footer a i b{
 	padding-top: 50px;
 	height: 650px;
 	overflow: auto;
+	display: block;
 }

@@ -40,7 +40,7 @@
             <h2>You will see everyone else who's doing the same.</h2>
             <h3>Tip: if the stage gets dirty, simply reload the page</h3>
         </hgroup>
-        <div>
+        <div class="chat-container">
             <ul id="messages"></ul>
             <form id="form" action="">
                 <input id="input" autocomplete="off" /><button>Send</button>
@@ -54,6 +54,10 @@
 	<script type="text/javascript">
     document.body.style.cursor = 'none';
     </script>
+        <script>
+            var objDiv = document.getElementById("chat-container");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        </script>
         <script>
             var socket = io();
 
