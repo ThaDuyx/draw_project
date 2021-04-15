@@ -45,8 +45,9 @@ $(function(){
 			
 			// Draw a line on the canvas. clients[data.id] holds
 			// the previous position of this user's mouse pointer
-			
-			drawLine(clients[data.id].x, clients[data.id].y, data.x, data.y);
+
+			console.log(canvas[0].offsetLeft + " and " + canvas[0].offsetTop);
+			drawLine(clients[data.id].x-canvas[0].offsetLeft, clients[data.id].y-canvas[0].offsetTop, data.x-canvas[0].offsetLeft, data.y-canvas[0].offsetTop);
 		}
 		
 		// Saving the current client state

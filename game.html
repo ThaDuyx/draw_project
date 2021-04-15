@@ -10,21 +10,43 @@
         <!--[if lt IE 9]>
           <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+
+        <style>
+            body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+            #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+            #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+            #input:focus { outline: none; }
+            #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+            #messages > li { padding: 0.5rem 1rem; }
+            #messages > li:nth-child(odd) { background: #efefef; }
+        </style>
     </head>
 
     <body>
         <div id="cursors">
             <!-- The mouse pointers will be created here -->
         </div>
-            <canvas  id="paper" width="700" height="700">
-                Your browser needs to support canvas for this to work!
-            </canvas>
 
-        <hgroup id="instructions">
+
+        <canvas  id="paper" width="1000" height="650">
+            Your browser needs to support canvas for this to work!
+        </canvas>
+
+
+        <!--<hgroup id="instructions">
             <h1>Draw anywhere!</h1>
             <h2>You will see everyone else who's doing the same.</h2>
             <h3>Tip: if the stage gets dirty, simply reload the page</h3>
-        </hgroup>
+        </hgroup>-->
+
+        <div id="chat-container">
+            <ul id="messages"></ul>
+            <form id="form" action="">
+                <input id="input" autocomplete="off" /><button class="add">Send</button>
+            </form>
+        </div>
 
         <!-- JavaScript includes. Notice that socket.io.js is served by node.js -->
         <script src="/socket.io/socket.io.js"></script>
@@ -33,5 +55,40 @@
 	<script type="text/javascript">
     document.body.style.cursor = 'none';
     </script>
+        <script>
+            $('#messages').on('DOMNodeInserted', 'li', function(e) {
+                console.log(e);
+                $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
+
+            });
+
+            $('.add').click(function(){
+
+                $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
+
+            });
+        </script>
+        <script>
+            var socket = io();
+
+            var form = document.getElementById('form');
+            var input = document.getElementById('input');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (input.value) {
+                    socket.emit('chat message', input.value);
+                    input.value = '';
+                }
+            });
+
+            socket.on('chat message', function(msg) {
+                var item = document.createElement('li');
+                item.textContent = msg;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+
+        </script>
     </body>
 </html>
