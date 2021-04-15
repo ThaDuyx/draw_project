@@ -56,6 +56,10 @@
     document.body.style.cursor = 'none';
     </script>
         <script>
+            $('#messages').on('DOMNodeInserted', 'li', function(e) {
+                console.log(e);
+            });
+
             $('.add').click(function(){
 
                 $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
