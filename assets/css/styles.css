@@ -170,7 +170,6 @@ footer a i b{
 	list-style-type: none;
 	border: 2px solid red;
 	display: grid;
-	padding-top: 50px;
 	height: 650px;
 	overflow: auto;
 	display: block;
