@@ -31,7 +31,7 @@ html,body{
 }
 
 html{
-	background:url('../img/bg.png') repeat #e4e4e4;
+	/*background:url('../img/bg.png') repeat #e4e4e4;*/
 		
 	/* This will hide the extra canvas if the screen is small */
 	overflow:hidden;
@@ -161,6 +161,7 @@ footer a i b{
 }
 
 #paper{
+	background:url('../img/bg.png') repeat #e4e4e4;
 	border:4px solid #000000;
 	float: left;
 }
