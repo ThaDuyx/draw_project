@@ -44,7 +44,7 @@
         <div id="chat-container">
             <ul id="messages"></ul>
             <form id="form" action="">
-                <input id="input" autocomplete="off" /><button>Send</button>
+                <input id="input" autocomplete="off" /><button class="add">Send</button>
             </form>
         </div>
 
@@ -56,8 +56,17 @@
     document.body.style.cursor = 'none';
     </script>
         <script>
-            var objDiv = document.getElementById("messages");
-            objDiv.scrollTop = objDiv.scrollHeight;
+            $('#messages').on('DOMNodeInserted', 'li', function(e) {
+                console.log(e);
+                $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
+
+            });
+
+            $('.add').click(function(){
+
+                $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
+
+            });
         </script>
         <script>
             var socket = io();
