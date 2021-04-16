@@ -15,7 +15,7 @@
     <a href="game.html" id="createRoom" class="createRoom" style="text-align: center; display: block; margin: auto;">Create your own Room!</a>
     <a href="game.html" style="text-align: center; display: block; margin: auto;"><button>Go To game</button></a>
 
-    <form action="game.html" method="GET">
+    <form action="game.html" method="GET" name="form1">
         <input type="text" name="room" />
         <input type="submit" value="Submit" />
     </form>
@@ -23,5 +23,21 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script>
+        function required()
+        {
+            var empt = document.forms["form1"]["room"].value;
+            if (empt == "")
+            {
+                alert("Please input a Value");
+                return false;
+            }
+            else
+            {
+
+                return true;
+            }
+        }
+    </script>
 </body>
 </html>
