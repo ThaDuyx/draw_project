@@ -6,6 +6,15 @@ const io = require('socket.io')(http);
 const static = require('node-static');
 const port = process.env.PORT || 3000;
 
+
+//EOW VI ER NÅET HERTIL:
+//Vi har endelig fået fat på room name når man disconnecter hvilket betyder at vi kan opstille Dictionary systemet som
+//holder styr på hvor mange der er i hvert rum.
+//altså dict(room) = antal spillere
+//vi kan anvende dette tal til fx at create et room hvis det er tomt, eller slette et room ... hvis det er tomt
+
+
+
 app.use(express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
