@@ -34,7 +34,6 @@ $(function(){
 	socket.emit('join', room)
 
 	socket.on('moving', function (data) {
-
 		if(! (data.id in clients)){
 			// a new user has come online. create a cursor for them
 			cursors[data.id] = $('<div class="cursor">').appendTo('#cursors');
@@ -131,7 +130,12 @@ $(function(){
 	form.addEventListener('submit', function(e) {
 		e.preventDefault();
 		if (input.value) {
-			socket.emit('chat message', input.value);
+
+			socket.emit('chat message',{
+				'msg': input.value,
+				'room':room
+			});
+			//socket.emit('chat message', input.value);
 			input.value = '';
 		}
 	});
