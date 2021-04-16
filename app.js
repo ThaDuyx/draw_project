@@ -29,9 +29,14 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
+    //var rooms = Object.keys(socket.rooms);
+    //console.log('user disconnected at room: ' + rooms[0]);
+  });
+
+  socket.on('disconnecting', () => {
     var rooms = Object.keys(socket.rooms);
     console.log('user disconnected at room: ' + rooms[0]);
-  });
+  })
 
   socket.on('chat message', (data) => {
     console.log('message: ' + data.msg);
