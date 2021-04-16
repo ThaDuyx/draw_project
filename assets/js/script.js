@@ -24,7 +24,7 @@ $(function(){
 	var clients = {};
 	var cursors = {};
 
-	var socket = io.connect(url);
+	//var socket = io.connect(url);
 	//var socket = io();
 
 	socket.on('moving', function (data) {
@@ -120,8 +120,8 @@ $(function(){
 
 });
 
-$("#createRoom").click(function() {
+/*$("#createRoom").click(function() {
 	var socket = io();
 	var roomName = $("#fname").val();
 	socket.emit('join', roomName)
-});
+});*/
