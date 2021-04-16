@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
     console.log(socket.rooms); // the Set contains at least the socket ID
 
     for (const [key, value] of Object.entries(socket.rooms)) {
-      console.log(key, value);
+      console.log(value);
     }
 
   });
