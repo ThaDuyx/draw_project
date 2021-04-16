@@ -31,7 +31,7 @@ $(function(){
 	var textFromIndex = window.location.search;
 	var textArray = textFromIndex.split("=");
 	var room = textArray[1];
-	console.log(room);
+	socket.emit('join', room)
 
 	socket.on('moving', function (data) {
 		
