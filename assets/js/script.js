@@ -121,6 +121,7 @@ $(function(){
 });
 
 $("#createRoom").click(function() {
+	console.log("creating room")
 	var socket = io();
 	var roomName = $("#fname").val();
 	socket.emit('join', roomName)
