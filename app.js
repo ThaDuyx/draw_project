@@ -33,9 +33,14 @@ io.on('connection', (socket) => {
     //console.log('user disconnected at room: ' + rooms[0]);
   });
 
-  socket.on('disconnecting', () => {
-    var rooms = Object.keys(socket.rooms);
-    console.log('user disconnected at room: ' + rooms[0]);
+
+  socket.on('disconnecting', function(){
+    var self = this;
+    var rooms = Object.keys(self.rooms);
+
+    rooms.forEach(function(room){
+      self.to(room).emit('user left', self.id + 'left');
+    });
   });
 
   socket.on('chat message', (data) => {
