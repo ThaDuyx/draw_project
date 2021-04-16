@@ -27,7 +27,11 @@ $(function(){
 	//var socket = io.connect(url);
 	var socket = io();
 
-	console.log(window.location.search);
+	//Getting room name
+	var textFromIndex = window.location.search;
+	var textArray = textFromIndex.split("=");
+	var room = textArray[1];
+	console.log(room);
 
 	socket.on('moving', function (data) {
 		
