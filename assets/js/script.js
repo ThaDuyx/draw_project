@@ -24,8 +24,8 @@ $(function(){
 	var clients = {};
 	var cursors = {};
 
-	//var socket = io.connect(url);
-	//var socket = io();
+	var socket = io.connect(url);
+	var socket = io();
 
 	socket.on('moving', function (data) {
 		
