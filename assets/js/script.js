@@ -27,6 +27,8 @@ $(function(){
 	//var socket = io.connect(url);
 	var socket = io();
 
+	console.log(window.location.search);
+
 	socket.on('moving', function (data) {
 		
 		if(! (data.id in clients)){
