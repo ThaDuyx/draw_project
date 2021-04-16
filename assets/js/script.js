@@ -117,11 +117,4 @@ $(function(){
 		ctx.lineTo(tox, toy);
 		ctx.stroke();
 	}
-
-});
-
-$("#createRoom").click(function() {
-	var socket = io();
-	var roomName = $("#fname").val();
-	socket.emit('join', roomName)
 });
