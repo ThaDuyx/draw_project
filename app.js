@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
     var rooms = Object.keys(self.rooms);
 
     rooms.forEach(function(room){
-      self.to(room).emit('user left', self.id + 'left');
+      console.log('user left', self.id + 'left');
     });
   });
 
