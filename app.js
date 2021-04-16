@@ -35,12 +35,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('disconnecting', function(){
-    var self = this;
-    var rooms = Object.keys(self.rooms);
-
-    rooms.forEach(function(room){
-      console.log('user left', self.id + 'left');
-    });
+    console.log(socket.rooms); // the Set contains at least the socket ID
   });
 
   socket.on('chat message', (data) => {
