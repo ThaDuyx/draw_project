@@ -18,14 +18,15 @@ app.get('/game.html', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+
+  console.log('a user connected');
+
   //joining room
   socket.on('join', roomName => {
     console.log(roomName);
     socket.join(roomName);
     socket.to(roomName).emit('user joined', socket.id);
   });
-  //drawing
-  console.log('a user connected');
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
@@ -39,6 +40,8 @@ io.on('connection', (socket) => {
   socket.on('mousemove', data => {
     io.emit('moving', data);
   });
+
+
 });
 
 http.listen(port, () => {
