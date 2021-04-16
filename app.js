@@ -36,6 +36,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnecting', function(){
     console.log(socket.rooms); // the Set contains at least the socket ID
+    console.log("socket id: " + socket.id)
 
     for (const [key, value] of Object.entries(socket.rooms)) {
       console.log(value);
