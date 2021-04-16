@@ -36,6 +36,11 @@ io.on('connection', (socket) => {
 
   socket.on('disconnecting', function(){
     console.log(socket.rooms); // the Set contains at least the socket ID
+
+    for (const [key, value] of Object.entries(socket.rooms)) {
+      console.log(key, value);
+    }
+
   });
 
   socket.on('chat message', (data) => {
