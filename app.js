@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
     console.log(socket.rooms); // the Set contains at least the socket ID
     console.log("socket id: " + socket.id);
     const iterator = socket.rooms.values();
+    iterator.next();
     console.log("room: " + iterator.next().value);
 
     for (const [key, value] of Object.entries(socket.rooms)) {
