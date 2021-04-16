@@ -38,7 +38,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('mousemove', data => {
-    io.emit('moving', data);
+    var room = data.room;
+    io.to(room).emit('moving',data);
+    //io.emit('moving', data);
   });
 
 

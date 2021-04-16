@@ -34,7 +34,7 @@ $(function(){
 	socket.emit('join', room)
 
 	socket.on('moving', function (data) {
-		
+
 		if(! (data.id in clients)){
 			// a new user has come online. create a cursor for them
 			cursors[data.id] = $('<div class="cursor">').appendTo('#cursors');
@@ -85,7 +85,8 @@ $(function(){
 				'x': e.pageX,
 				'y': e.pageY,
 				'drawing': drawing,
-				'id': id
+				'id': id,
+				'room': room
 			});
 			lastEmit = $.now();
 		}
