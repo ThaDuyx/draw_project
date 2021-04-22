@@ -86,9 +86,10 @@ io.on('connection', (socket) => {
     var roomName = iterator.next().value;
     console.log("room: " + roomName);
 
-    if (roomDict[roomName] != undefined && roomDict[roomName] != null) roomDict[roomName].amountOfPlayers -= 1;
-
-    if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
+    if (roomDict[roomName] != undefined && roomDict[roomName] != null){
+      roomDict[roomName].amountOfPlayers -= 1;
+      if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
+    }
 
   });
 
