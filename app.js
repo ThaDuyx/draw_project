@@ -86,18 +86,9 @@ io.on('connection', (socket) => {
     var roomName = iterator.next().value;
     console.log("room: " + roomName);
 
-    roomDict[roomName].amountOfPlayers -= 1;
+    if (roomDict[roomName] != undefined && roomDict[roomName] != null) roomDict[roomName].amountOfPlayers -= 1;
 
-    if (roomDict[roomName].amountOfPlayers == 0){
-      //delete or reset
-      delete roomDict[roomName];
-    }
-
-    console.log("Remaining rooms: " + roomDict);
-
-    /*for (const [key, value] of Object.entries(socket.rooms)) {
-      console.log(value);
-    }*/
+    if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
 
   });
 
