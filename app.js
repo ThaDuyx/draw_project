@@ -57,21 +57,31 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    //var rooms = Object.keys(socket.rooms);
-    //console.log('user disconnected at room: ' + rooms[0]);
+
   });
 
 
   socket.on('disconnecting', function(){
+    console.log("disconnecting...");
     console.log(socket.rooms); // the Set contains at least the socket ID
     console.log("socket id: " + socket.id);
     const iterator = socket.rooms.values();
     iterator.next();
-    console.log("room: " + iterator.next().value);
 
-    for (const [key, value] of Object.entries(socket.rooms)) {
-      console.log(value);
+    var roomName = iterator.next().value;
+    console.log("room: " + roomName);
+
+    roomDict[roomName] -= 1;
+
+    if (roomDict[roomName] == 0){
+      roomDict.delete(roomName);
     }
+
+    console.log("Remaining rooms: " + roomDict);
+
+    /*for (const [key, value] of Object.entries(socket.rooms)) {
+      console.log(value);
+    }*/
 
   });
 
