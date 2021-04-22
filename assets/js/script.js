@@ -135,6 +135,7 @@ $(function(){
 				'msg': input.value,
 				'room':room
 			});
+
 			//socket.emit('chat message', input.value);
 			input.value = '';
 		}
@@ -147,12 +148,20 @@ $(function(){
 		window.scrollTo(0, document.body.scrollHeight);
 	});
 
+	socket.on('timer', function (counter) {
+		$('#countDown').html(counter.countdown);
+	})
+
 	socket.on('full', function(e){
 	   //display alert
         print("the room is full");
 
     });
 
-
+	$('#startGame').click(function() {
+		socket.emit('start',{
+			'room':room
+		});
+	});
 
 });
