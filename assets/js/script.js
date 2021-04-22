@@ -147,4 +147,12 @@ $(function(){
 		window.scrollTo(0, document.body.scrollHeight);
 	});
 
+	socket.on('full', function(e){
+	   //display alert
+        print("the room is full");
+
+    });
+
+
+
 });

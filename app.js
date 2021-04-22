@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
         roomDict[roomName].amountOfPlayers += 1;
         success = true;
       }else{
-        //implement room full
+        socket.to(socket.id).emit('full', true);
       }
     }
 
