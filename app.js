@@ -8,13 +8,18 @@ const port = process.env.PORT || 3000;
 
 
 class RoomController{
-  var players = [];
+  var players = new Array();
   var playerScore = new Object();
   var currentThingToGuess = "";
   var amountOfPlayers = 1;
   var gameHasStarted = false;
   var currentPlayerTurn = 0;
-  var wordList = [];
+  var wordList = new Array();
+
+  constructor(){
+
+  }
+
 }
 
 var roomDict = new Object();
