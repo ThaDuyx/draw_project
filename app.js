@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 
 
 class RoomController{
-  var players = new Array();
+  //var players = new Array();
   var playerScore = new Object();
   var currentThingToGuess = "";
   var amountOfPlayers = 1;
