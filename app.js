@@ -7,20 +7,14 @@ const static = require('node-static');
 const port = process.env.PORT || 3000;
 
 
-class RoomStats{
-  var players; //array
-  var playerScore; //dictionary
-  var currentThingToGuess; //string
-  var amountOfPlayers; //int
-  var gameHasStarted; //bool
-
-  constructor(){
-    players = [];
-    playerScore = new Object();
-    currentThingToGuess = "";
-    amountOfPlayers = 1;
-    gameHasStarted = false;
-  }
+class RoomController{
+  var players = [];
+  var playerScore = new Object();
+  var currentThingToGuess = "";
+  var amountOfPlayers = 1;
+  var gameHasStarted = false;
+  var currentPlayerTurn = 0;
+  var wordList = [];
 }
 
 var roomDict = new Object();
@@ -47,7 +41,7 @@ io.on('connection', (socket) => {
     var success = false;
 
     if(roomDict[roomName] == null){
-      roomDict[roomName] = new RoomStats();
+      roomDict[roomName] = new RoomController();
       success = true;
     }else{
       if (roomDict[roomName].amountOfPlayers != maxPlayers){
