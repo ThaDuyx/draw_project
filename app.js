@@ -13,7 +13,8 @@ const port = process.env.PORT || 3000;
 //altså dict(room) = antal spillere
 //vi kan anvende dette tal til fx at create et room hvis det er tomt, eller slette et room ... hvis det er tomt
 
-
+var roomDict = new Object();
+var maxPlayers = 2;
 
 app.use(express.static(__dirname + '/assets'));
 
@@ -32,9 +33,27 @@ io.on('connection', (socket) => {
 
   //joining room
   socket.on('join', roomName => {
-    console.log(roomName);
-    socket.join(roomName);
-    socket.to(roomName).emit('user joined', socket.id);
+
+    var success = false;
+
+    if(roomDict[roomName] == null){
+      roomDict[roomName] = 1;
+      success = true;
+    }else{
+      if (roomDict[roomName] != maxPlayers){
+        roomDict[roomName] += 1;
+        success = true;
+      }else{
+        //implement room full
+      }
+    }
+
+    if (success){
+      console.log(roomName + " " + roomDict[roomName]);
+      socket.join(roomName);
+      socket.to(roomName).emit('user joined', socket.id);
+    }
+
   });
 
   socket.on('disconnect', () => {
