@@ -7,11 +7,21 @@ const static = require('node-static');
 const port = process.env.PORT || 3000;
 
 
-//EOW VI ER NÅET HERTIL:
-//Vi har endelig fået fat på room name når man disconnecter hvilket betyder at vi kan opstille Dictionary systemet som
-//holder styr på hvor mange der er i hvert rum.
-//altså dict(room) = antal spillere
-//vi kan anvende dette tal til fx at create et room hvis det er tomt, eller slette et room ... hvis det er tomt
+class RoomStats{
+  var players; //array
+  var playerScore; //dictionary
+  var currentThingToGuess; //string
+  var amountOfPlayers; //int
+  var gameHasStarted; //bool
+
+  constructor(){
+    players = [];
+    playerScore = new Object();
+    currentThingToGuess = "";
+    amountOfPlayers = 1;
+    gameHasStarted = false;
+  }
+}
 
 var roomDict = new Object();
 var maxPlayers = 2;
@@ -37,11 +47,11 @@ io.on('connection', (socket) => {
     var success = false;
 
     if(roomDict[roomName] == null){
-      roomDict[roomName] = 1;
+      roomDict[roomName] = new RoomStats();
       success = true;
     }else{
-      if (roomDict[roomName] != maxPlayers){
-        roomDict[roomName] += 1;
+      if (roomDict[roomName].amountOfPlayers != maxPlayers){
+        roomDict[roomName].amountOfPlayers += 1;
         success = true;
       }else{
         //implement room full
@@ -71,10 +81,11 @@ io.on('connection', (socket) => {
     var roomName = iterator.next().value;
     console.log("room: " + roomName);
 
-    roomDict[roomName] -= 1;
+    roomDict[roomName].amountOfPlayers -= 1;
 
-    if (roomDict[roomName] == 0){
-      roomDict.delete(roomName);
+    if (roomDict[roomName].amountOfPlayers == 0){
+      //delete or reset
+      delete roomDict[roomName];
     }
 
     console.log("Remaining rooms: " + roomDict);
