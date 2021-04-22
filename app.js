@@ -8,14 +8,23 @@ const port = process.env.PORT || 3000;
 
 
 class RoomController{
-  constructor(){
-    this.players = new Array();
+  constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList){
+
+    this.players = players;
+    this.playerScore = playerScore;
+    this.currentThingToGuess = currentThingToGuess;
+    this.amountOfPlayers = amountOfPlayers;
+    this.gameHasStarted = gameHasStarted;
+    this.currentPlayerTurn = currentPlayerTurn;
+    this.wordList = wordList;
+
+    /*this.players = new Array();
     this.playerScore = new Object();
     this.currentThingToGuess = "";
     this.amountOfPlayers = 1;
     this.gameHasStarted = false;
     this.currentPlayerTurn = 0;
-    this.wordList = new Array();
+    this.wordList = new Array();*/
   }
 }
 
@@ -43,7 +52,7 @@ io.on('connection', (socket) => {
     var success = false;
 
     if(roomDict[roomName] == null){
-      roomDict[roomName] = new RoomController();
+      roomDict[roomName] = new RoomController(new Array(), new Object(), "", 1, false, 0, new Array());
       success = true;
     }else{
       if (roomDict[roomName].amountOfPlayers != maxPlayers){
