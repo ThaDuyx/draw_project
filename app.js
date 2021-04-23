@@ -66,6 +66,9 @@ io.on('connection', (socket) => {
     if (success){
       console.log(roomName + " " + roomDict[roomName]);
       socket.join(roomName);
+
+      io.to(socket.id).emit('onJoinSuccess', true);
+
       socket.to(roomName).emit('user joined', socket.id);
     }
 

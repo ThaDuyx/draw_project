@@ -18,9 +18,6 @@ $(function(){
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
 
-	//hiding cursor
-	document.body.style.cursor = 'none';
-
 	// A flag for drawing activity
 	var drawing = false;
 
@@ -35,6 +32,14 @@ $(function(){
 	var textArray = textFromIndex.split("=");
 	var room = textArray[1];
 	socket.emit('join', room)
+
+
+	socket.on('onJoinSuccess', function (e) {
+		console.log("Join successfull");
+
+		//hiding cursor
+		document.body.style.cursor = 'none';
+	})
 
 	socket.on('moving', function (data) {
 		if(! (data.id in clients)){
@@ -157,7 +162,7 @@ $(function(){
 
 	socket.on('full', function(e){
 	   //display alert
-		document.body.style.cursor = 'default';
+		//document.body.style.cursor = 'default';
 		alert("Join failed: The room is full. You will be sent back to the previous page");
 		window.location.href = "http://130.225.170.90/"; //go to main page
 
