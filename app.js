@@ -75,7 +75,6 @@ io.on('connection', (socket) => {
 
   });
 
-
   socket.on('disconnecting', function(){
     console.log("disconnecting...");
     console.log(socket.rooms); // the Set contains at least the socket ID
@@ -98,15 +97,34 @@ io.on('connection', (socket) => {
     io.to(data.room).emit('chat message', data.msg);
   });
 
+  socket.on('start', data => {
+    var room = data.room;
+    var countdown = 10;
+    var interval = setInterval(function() {
+      countdown--;
+      io.to(room).emit('timer', { countdown: countdown });
+      if (countdown == 0){
+        clearInterval(interval);
+        //Emit 'nextTurn' and let server handle the upcoming users' turn
+      }
+    }, 1000);
+  });
+
   socket.on('mousemove', data => {
     var room = data.room;
     io.to(room).emit('moving',data);
     //io.emit('moving', data);
   });
 
-
 });
 
 http.listen(port, () => {
   console.log(`Socket.IO server running at http://localhost:${port}/`);
+});
+
+io.sockets.on('connection', function (socket) {
+  socket.on('reset', function (data) {
+    countdown = 1000;
+    io.sockets.emit('timer', { countdown: countdown });
+  });
 });
