@@ -17,7 +17,10 @@ $(function(){
 	
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
-	
+
+	//hiding cursor
+	document.body.style.cursor = 'none';
+
 	// A flag for drawing activity
 	var drawing = false;
 
