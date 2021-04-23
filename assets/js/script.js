@@ -31,7 +31,7 @@ $(function(){
 	var textFromIndex = window.location.search;
 	var textArray = textFromIndex.split("=");
 	var room = textArray[1];
-	socket.emit('join', room)
+	socket.emit('join', room);
 
 
 	socket.on('onJoinSuccess', function (e) {
@@ -39,7 +39,7 @@ $(function(){
 
 		//hiding cursor
 		document.body.style.cursor = 'none';
-	})
+	});
 
 	socket.on('moving', function (data) {
 		if(! (data.id in clients)){
@@ -158,16 +158,16 @@ $(function(){
 
 	socket.on('timer', function (counter) {
 		$('#countDown').html(counter.countdown);
-	})
+	});
 
 	socket.on('onStartSuccess', function (e) {
 		var button = document.getElementById("startGame");
 		button.style.display = "none"; //hiding button
-	}
+	});
 
 	socket.on('onStartFail', function () {
 		alert("Failed, room has to be full before starting.");
-	})
+	});
 
 	socket.on('full', function(e){
 	   //display alert
