@@ -187,10 +187,14 @@ $(function(){
 	});
 
 	socket.on('user left', (data) => {
-		var message = "User Left: " + data.id;
-		createChatMessage(message);
-		updatePlayerCount(data.playerCount, data.maxPlayers);
-
+		if (data.gameHasStarted){
+			alert("Someone has left the game. You will be returned to the main screen.");
+			window.location.href = "http://130.225.170.90/"; //go to main page
+		}else{
+			var message = "User Left: " + data.id;
+			createChatMessage(message);
+			updatePlayerCount(data.playerCount, data.maxPlayers);
+		}
 	});
 
 	$('#startGame').click(function() {

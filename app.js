@@ -61,9 +61,11 @@ io.on('connection', (socket) => {
 
       io.to(socket.id).emit('onJoinSuccess', true);
 
-
       var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers};
       io.to(roomName).emit('user joined', data);
+
+      roomDict[roomName].players.push(socket.id);
+      roomDict[roomName].playerScore[socket.id] = 0;
     }
 
   });
@@ -86,7 +88,7 @@ io.on('connection', (socket) => {
       roomDict[roomName].amountOfPlayers -= 1;
       if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
       else{
-        var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers};
+        var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
         io.to(roomName).emit('user left', data);
       }
     }
