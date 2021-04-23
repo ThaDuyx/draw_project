@@ -179,7 +179,7 @@ $(function(){
 	socket.on('user joined', function (data) {
 		var message = "User joined: " + data.id;
 		createChatMessage(message);
-		updatePlayerCount(data.playerCount, data.maxPlayers)
+		updatePlayerCount(data.playerCount, data.maxPlayers);
 
 	});
 
