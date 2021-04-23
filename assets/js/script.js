@@ -176,9 +176,11 @@ $(function(){
 
     });
 
-	socket.on('user joined', function (id) {
-		var message = "User joined: " + id;
+	socket.on('user joined', function (data) {
+		var message = "User joined: " + data.id;
 		createChatMessage(message);
+		updatePlayerCount(data.playerCount, data.maxPlayers)
+
 	});
 
 	$('#startGame').click(function() {
@@ -192,6 +194,11 @@ $(function(){
 		item.textContent = msg;
 		messages.appendChild(item);
 		window.scrollTo(0, document.body.scrollHeight);
+	}
+
+	function updatePlayerCount(playerCount, maxPlayers){
+		var item = document.getElementById("numberOfPlayers");
+		item.textContent = playerCount.toString() + "/" + maxPlayers.toString();
 	}
 
 });
