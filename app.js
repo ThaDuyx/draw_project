@@ -112,6 +112,7 @@ io.on('connection', (socket) => {
         io.to(room).emit('timer', { countdown: countdown });
         if (countdown == 0){
           clearInterval(interval);
+
           //Emit 'nextTurn' and let server handle the upcoming users' turn
         }
       }, 1000);

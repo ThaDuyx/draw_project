@@ -33,6 +33,8 @@ $(function(){
 	var room = textArray[1];
 	socket.emit('join', room);
 
+	var myTurn = false;
+
 
 	socket.on('onJoinSuccess', function (e) {
 		console.log("Join successfull");
@@ -72,12 +74,13 @@ $(function(){
 	
 	canvas.on('mousedown',function(e){
 		e.preventDefault();
-		drawing = true;
-		prev.x = e.pageX;
-		prev.y = e.pageY;
-		
+		if (myTurn){
+			drawing = true;
+			prev.x = e.pageX;
+			prev.y = e.pageY;
+		}
 		// Hide the instructions
-		instructions.fadeOut();
+		//instructions.fadeOut();
 	});
 	
 	doc.bind('mouseup mouseleave',function(){
