@@ -154,8 +154,8 @@ $(function(){
 
 	socket.on('full', function(e){
 	   //display alert
-		console.log("the room is full");
-		alert("Join failed: The room is full. Please return to previous screen and choose another room.");
+		alert("Join failed: The room is full. You will be sent back to the previous page");
+		window.history.back();
 
     });
 
