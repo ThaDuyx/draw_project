@@ -61,7 +61,7 @@ io.on('connection', (socket) => {
 
       io.to(socket.id).emit('onJoinSuccess', true);
 
-      socket.to(roomName).emit('user joined', socket.id);
+      io.to(roomName).emit('user joined', socket.id);
     }
 
   });

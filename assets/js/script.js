@@ -179,7 +179,7 @@ $(function(){
 	socket.on('user joined', function (id) {
 		var message = "User joined: " + id;
 		createChatMessage(message);
-	})
+	});
 
 	$('#startGame').click(function() {
 		socket.emit('start',{
