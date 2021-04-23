@@ -104,20 +104,8 @@ io.on('connection', (socket) => {
     var room = data.room;
     if (roomDict[room].amountOfPlayers == maxPlayers && !roomDict[room].gameHasStarted){ //only run when the room is full and not already started
       roomDict[room].gameHasStarted = true;
-
       io.to(room).emit('onStartSuccess', true);
-
-
-      var countdown = 10;
-      var interval = setInterval(function() {
-        countdown--;
-        io.to(room).emit('timer', { countdown: countdown });
-        if (countdown == 0){
-          clearInterval(interval);
-
-          //Emit 'nextTurn' and let server handle the upcoming users' turn
-        }
-      }, 1000);
+      startTimer();
     }else{
       io.to(socket.id).emit('onStartFail');
     }
@@ -141,3 +129,30 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('timer', { countdown: countdown });
   });
 });
+
+function changeTurn(roomName){
+    var currentTurn = roomDict[roomName].currentPlayerTurn;
+    if (currentTurn != maxPlayers-1){
+        currentTurn++;
+    }else{
+        currentTurn = 0;
+    }
+    roomDict[roomName].currentPlayerTurn = currentTurn;
+
+    io.to(roomName).emit('onNewTurn', roomDict[roomName].players[currentTurn]);
+}
+
+function startTimer(){
+    var countdown = 10;
+    var interval = setInterval(function() {
+        countdown--;
+        io.to(room).emit('timer', { countdown: countdown });
+        if (countdown == 0){
+            clearInterval(interval);
+            changeTurn(room);
+            startTimer();
+            //Emit 'nextTurn' and let server handle the upcoming users' turn
+        }
+    }, 1000);
+}
+

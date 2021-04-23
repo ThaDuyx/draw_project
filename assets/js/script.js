@@ -197,6 +197,11 @@ $(function(){
 		}
 	});
 
+	socket.on('onNewTurn', function(id){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		isItMyTurn(id);
+	});
+
 	$('#startGame').click(function() {
 		socket.emit('start',{
 			'room':room
@@ -213,6 +218,14 @@ $(function(){
 	function updatePlayerCount(playerCount, maxPlayers){
 		var item = document.getElementById("numberOfPlayers");
 		item.textContent = playerCount + "/" + maxPlayers;
+	}
+
+	function isItMyTurn(id) {
+		if (id == socket.id){
+			myTurn = true;
+		}else{
+			myTurn = false;
+		}
 	}
 
 });
