@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-
+      console.log(roomDict);
   });
 
   socket.on('disconnecting', function(){
@@ -156,9 +156,5 @@ function startTimer(room){
             //Emit 'nextTurn' and let server handle the upcoming users' turn
         }
     }, 1000);
-}
-
-while(true){
-    console.log(roomDict);
 }
 
