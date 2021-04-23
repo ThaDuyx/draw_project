@@ -17,14 +17,6 @@ class RoomController{
     this.gameHasStarted = gameHasStarted;
     this.currentPlayerTurn = currentPlayerTurn;
     this.wordList = wordList;
-
-    /*this.players = new Array();
-    this.playerScore = new Object();
-    this.currentThingToGuess = "";
-    this.amountOfPlayers = 1;
-    this.gameHasStarted = false;
-    this.currentPlayerTurn = 0;
-    this.wordList = new Array();*/
   }
 }
 

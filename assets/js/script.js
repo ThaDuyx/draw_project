@@ -163,7 +163,7 @@ $(function(){
 	socket.on('onStartSuccess', function (e) {
 		var button = document.getElementById("startGame");
 		button.style.display = "none"; //hiding button
-	})
+	}
 
 	socket.on('onStartFail', function () {
 		alert("Failed, room has to be full before starting.");
@@ -176,12 +176,23 @@ $(function(){
 
     });
 
+	socket.on('user joined', function (id) {
+		var message = "User joined: " + id;
+		createChatMessage(message);
+	})
+
 	$('#startGame').click(function() {
 		socket.emit('start',{
 			'room':room
 		});
 	});
 
-
+	function createChatMessage(msg) {
+		var item = document.createElement('li');
+		item.textContent = msg;
+		messages.appendChild(item);
+		window.scrollTo(0, document.body.scrollHeight);
+	}
 
 });
+
