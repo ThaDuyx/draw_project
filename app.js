@@ -131,7 +131,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 function changeTurn(roomName){
-    if (roomDict[room] == undefined || roomDict[room] == null) return;
+    if (roomDict[roomName] == undefined || roomDict[roomName] == null) return;
     var currentTurn = roomDict[roomName].currentPlayerTurn;
     if (currentTurn != maxPlayers-1){
         currentTurn++;
