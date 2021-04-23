@@ -150,7 +150,7 @@ function startTimer(room){
         if (countdown == 0){
             clearInterval(interval);
             changeTurn(room);
-            startTimer();
+            startTimer(room);
             //Emit 'nextTurn' and let server handle the upcoming users' turn
         }
     }, 1000);
