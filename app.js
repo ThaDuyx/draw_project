@@ -102,7 +102,11 @@ io.on('connection', (socket) => {
 
   socket.on('start', data => {
     var room = data.room;
-    if (roomDict[room].amountOfPlayers == maxPlayers){ //only run when the room is full
+    if (roomDict[room].amountOfPlayers == maxPlayers && !roomDict[room].gameHasStarted){ //only run when the room is full and not already started
+      roomDict[room].gameHasStarted = true;
+
+      io.to(socket.id).emit('onStartSuccess', true);
+
       var countdown = 10;
       var interval = setInterval(function() {
         countdown--;
