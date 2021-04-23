@@ -102,15 +102,17 @@ io.on('connection', (socket) => {
 
   socket.on('start', data => {
     var room = data.room;
-    var countdown = 10;
-    var interval = setInterval(function() {
-      countdown--;
-      io.to(room).emit('timer', { countdown: countdown });
-      if (countdown == 0){
-        clearInterval(interval);
-        //Emit 'nextTurn' and let server handle the upcoming users' turn
-      }
-    }, 1000);
+    if (roomDict[room].amountOfPlayers == maxPlayers){ //only run when the room is full
+      var countdown = 10;
+      var interval = setInterval(function() {
+        countdown--;
+        io.to(room).emit('timer', { countdown: countdown });
+        if (countdown == 0){
+          clearInterval(interval);
+          //Emit 'nextTurn' and let server handle the upcoming users' turn
+        }
+      }, 1000);
+    }
   });
 
   socket.on('mousemove', data => {
