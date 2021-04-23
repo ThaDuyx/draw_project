@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
       io.to(socket.id).emit('onJoinSuccess', true);
 
 
-      data = {'id':socket.id,'playerCount':roomDict[roomName].playerCount,'maxPlayers':maxPlayers};
+      var data = {'id':socket.id,'playerCount':roomDict[roomName].playerCount,'maxPlayers':maxPlayers};
       io.to(roomName).emit('user joined', data);
     }
 
