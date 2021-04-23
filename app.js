@@ -85,6 +85,10 @@ io.on('connection', (socket) => {
     if (roomDict[roomName] != undefined && roomDict[roomName] != null){
       roomDict[roomName].amountOfPlayers -= 1;
       if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
+      else{
+        var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers};
+        io.to(roomName).emit('user left', data);
+      }
     }
 
   });

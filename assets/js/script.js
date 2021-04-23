@@ -183,6 +183,13 @@ $(function(){
 
 	});
 
+	socket.on('user left', (data) => {
+		var message = "User Left: " + data.id;
+		createChatMessage(message);
+		updatePlayerCount(data.playerCount, data.maxPlayers);
+
+	});
+
 	$('#startGame').click(function() {
 		socket.emit('start',{
 			'room':room
