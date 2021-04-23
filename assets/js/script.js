@@ -165,6 +165,10 @@ $(function(){
 		button.style.display = "none"; //hiding button
 	})
 
+	socket.on('onStartFail', function () {
+		alert("Failed, room has to be full before starting.");
+	})
+
 	socket.on('full', function(e){
 	   //display alert
 		alert("Join failed: The room is full. You will be sent back to the previous page");
