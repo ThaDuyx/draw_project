@@ -198,7 +198,7 @@ $(function(){
 
 	function updatePlayerCount(playerCount, maxPlayers){
 		var item = document.getElementById("numberOfPlayers");
-		item.textContent = playerCount.toString() + "/" + maxPlayers;
+		item.textContent = playerCount + "/" + maxPlayers;
 	}
 
 });
