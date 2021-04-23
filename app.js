@@ -6,6 +6,10 @@ const io = require('socket.io')(http);
 const static = require('node-static');
 const port = process.env.PORT || 3000;
 
+//EOW vi er nået hertil: starttimer giver os problemer. Vi laver et check med at rum er null når alle går.
+//lige nu virker counteren slet ikke. Men ellers så virker den, også selvom at man går ud og ind i rummet. (hvilket den ikke skal. den skal resettes)
+//vi fandt ud af at hvis alle gik ud af rummet, og ventede 10 sekunder, så ville counteren virke normalt når man går ind.
+
 
 class RoomController{
   constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList){
