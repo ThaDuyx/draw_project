@@ -158,3 +158,7 @@ function startTimer(room){
     }, 1000);
 }
 
+while(true){
+    console.log(roomDict);
+}
+
