@@ -176,7 +176,7 @@ $(function(){
 
     });
 
-	socket.on('user joined', function (data) {
+	socket.on('user joined', (data) => {
 		var message = "User joined: " + data.id;
 		createChatMessage(message);
 		updatePlayerCount(data.playerCount, data.maxPlayers);
