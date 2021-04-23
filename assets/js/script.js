@@ -149,9 +149,11 @@ $(function(){
 
 	socket.on('full', function(e){
 	   //display alert
-        print("the room is full");
+		console.log("the room is full");
 
     });
+
+
 
 
 
