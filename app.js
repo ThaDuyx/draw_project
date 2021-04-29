@@ -155,7 +155,7 @@ function startTimer(room){
         console.log("i am outside interval!!!!");
         return;
     }
-    var countdown = 10;
+    var countdown = 100;
     var interval = setInterval(function() {
         if (roomDict[room] == undefined || roomDict[room] == null){
             console.log("I am inside interval!!!!");
