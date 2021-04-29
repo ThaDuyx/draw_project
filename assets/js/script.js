@@ -197,12 +197,12 @@ $(function(){
 		}
 	});
 
-	socket.on('onNewTurn', function(data){
+	socket.on('onNewTurn', (data) => {
 		var currentPlayerID = data.currentPlayer;
 		var currentWord = data.word;
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		isItMyTurn(id, currentWord);
+		isItMyTurn(currentPlayerID, currentWord);
 	});
 
 	$('#startGame').click(function() {
