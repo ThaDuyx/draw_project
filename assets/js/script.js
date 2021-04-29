@@ -11,8 +11,8 @@ $(function(){
 
 	var doc = $(document),
 		win = $(window),
-		canvas = document.getElementById("paper"),
-		ctx = canvas.getContext('2d'),
+		canvas = $('#paper'),
+		ctx = canvas[0].getContext('2d'),
 		instructions = $('#instructions');
 	
 	// Generate an unique ID
