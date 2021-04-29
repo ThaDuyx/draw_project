@@ -202,11 +202,12 @@ $(function(){
 	socket.on('onNewTurn', (data) => {
 		var currentPlayerID = data.currentPlayer;
 		var currentWord = data.word;
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, canvas.width/2, canvas.height/2);
 		isItMyTurn(currentPlayerID, currentWord);
 	});
 
 	$('#startGame').click(function() {
+		ctx.fillStyle = "red";
 		socket.emit('start',{
 			'room':room
 		});
