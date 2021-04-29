@@ -229,11 +229,11 @@ $(function(){
 		if (id == socket.id){
 			myTurn = true;
 			turnText.textContent = "It is your turn. Draw the shown word below!";
-			wordText = "Word to draw: " + word;
+			wordText.textContent= "Word to draw: " + word;
 		}else{
 			myTurn = false;
 			turnText.textContent = "It is not your turn. You can try and guess the current word by using the chat.";
-			wordText = "Word to draw: hidden";
+			wordText.textContent = "Word to draw: hidden";
 		}
 	}
 
