@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
       //console.log(roomDict);
-      console.log(roomDict["rr"]);
+      //console.log(roomDict["rr"]);
   });
 
   socket.on('disconnecting', function(){
@@ -152,14 +152,16 @@ function changeTurn(roomName){
 
 function startTimer(room){
     if (roomDict[room] == undefined || roomDict[room] == null){
+        console.log("i am outside interval!!!!");
         return;
     }
     var countdown = 10;
     var interval = setInterval(function() {
-        /*if (roomDict[room] == undefined || roomDict[room] == null){
+        if (roomDict[room] == undefined || roomDict[room] == null){
+            console.log("I am inside interval!!!!");
             clearInterval(interval);
             return;
-        } */
+        }
         countdown--;
         io.to(room).emit('timer', { countdown: countdown });
         if (countdown == 0){
