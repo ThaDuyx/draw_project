@@ -117,6 +117,7 @@ io.on('connection', (socket) => {
     if (roomDict[room].amountOfPlayers == maxPlayers && !roomDict[room].gameHasStarted){ //only run when the room is full and not already started
       roomDict[room].gameHasStarted = true;
       io.to(room).emit('onStartSuccess', true);
+      changeTurn(room);
       startTimer(room);
     }else{
       io.to(socket.id).emit('onStartFail');
@@ -161,7 +162,7 @@ function startTimer(room){
     if (roomDict[room] == undefined || roomDict[room] == null){
         return;
     }
-    var countdown = 100;
+    var countdown = 10;
     var interval = setInterval(function() {
         if (roomDict[room] == undefined || roomDict[room] == null)
         {
