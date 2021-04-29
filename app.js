@@ -6,9 +6,10 @@ const io = require('socket.io')(http);
 const static = require('node-static');
 const port = process.env.PORT || 3000;
 
-//EOW vi er nået hertil: starttimer giver os problemer. Vi laver et check med at rum er null når alle går.
-//lige nu virker counteren slet ikke. Men ellers så virker den, også selvom at man går ud og ind i rummet. (hvilket den ikke skal. den skal resettes)
-//vi fandt ud af at hvis alle gik ud af rummet, og ventede 10 sekunder, så ville counteren virke normalt når man går ind.
+//EOW vi er nået hertil: Vi var igang med gætte systemet. Vi nåede et punkt hvor vi tænkte: er det clienten som skal checke om gættet er korrekt?
+// eller er det serveren? Vi testede derefter hvad der ville ske når clienten redigerede i javascriptet. Resultat: Clienten kunne få
+// serveren til at crashe ved at lave sine egne emits. Vi skal nu beslutte hvor meget vi skal lave om sådan at clienten ikke kan crashe serveren mere.
+//
 
 
 class RoomController{

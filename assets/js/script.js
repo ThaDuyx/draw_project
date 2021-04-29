@@ -152,6 +152,8 @@ $(function(){
 				'room':room
 			});
 
+
+
 			//socket.emit('chat message', input.value);
 			input.value = '';
 		}
