@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-      //console.log(roomDict);
+      console.log(roomDict);
       //console.log(roomDict["rr"]);
   });
 
@@ -93,8 +93,15 @@ io.on('connection', (socket) => {
       roomDict[roomName].amountOfPlayers -= 1;
       if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
       else{
-        var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
-        io.to(roomName).emit('user left', data);
+          //removing from room
+          var index = roomDict[roomName].players.indexOf(socket.id);
+          if (index > -1) {
+              roomDict[roomName].players.splice(index, 1);
+              roomDict[roomName].playerScore.delete(socket.id);
+          }
+
+          var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
+          io.to(roomName).emit('user left', data);
       }
     }
 
@@ -152,17 +159,15 @@ function changeTurn(roomName){
 
 function startTimer(room){
     if (roomDict[room] == undefined || roomDict[room] == null){
-        console.log("i am outside interval!!!!");
         return;
     }
     var countdown = 100;
     var interval = setInterval(function() {
-        if (roomDict[room] == undefined || roomDict[room] == null) console.log("I am inside interval!!!!"); clearInterval(interval); return;
-        /*{
-            console.log("I am inside interval!!!!");
+        if (roomDict[room] == undefined || roomDict[room] == null)
+        {
             clearInterval(interval);
             return;
-        }*/
+        }
         countdown--;
         io.to(room).emit('timer', { countdown: countdown });
         if (countdown == 0){
