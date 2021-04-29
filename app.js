@@ -40,7 +40,7 @@ app.get('/game.html', (req, res) => {
 
 io.on('connection', (socket) => {
 
-  console.log('a user connected');
+  //console.log('a user connected');
 
   //joining room
   socket.on('join', roomName => {
@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
     }
 
     if (success){
-      console.log(roomName + " " + roomDict[roomName]);
+      //console.log(roomName + " " + roomDict[roomName]);
       socket.join(roomName);
 
       io.to(socket.id).emit('onJoinSuccess', true);
@@ -79,14 +79,14 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnecting', function(){
-    console.log("disconnecting...");
-    console.log(socket.rooms); // the Set contains at least the socket ID
-    console.log("socket id: " + socket.id);
+    //console.log("disconnecting...");
+    //console.log(socket.rooms); // the Set contains at least the socket ID
+    //console.log("socket id: " + socket.id);
     const iterator = socket.rooms.values();
     iterator.next();
 
     var roomName = iterator.next().value;
-    console.log("room: " + roomName);
+    //console.log("room: " + roomName);
 
     if (roomDict[roomName] != undefined && roomDict[roomName] != null){
       roomDict[roomName].amountOfPlayers -= 1;
@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('chat message', (data) => {
-    console.log('message: ' + data.msg);
+    //console.log('message: ' + data.msg);
     io.to(data.room).emit('chat message', data.msg);
   });
 
@@ -124,7 +124,7 @@ io.on('connection', (socket) => {
 });
 
 http.listen(port, () => {
-  console.log(`Socket.IO server running at http://localhost:${port}/`);
+  //console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
 
 io.sockets.on('connection', function (socket) {
