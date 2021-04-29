@@ -208,7 +208,9 @@ $(function(){
 	socket.on('onNewTurn', (data) => {
 		var currentPlayerID = data.currentPlayer;
 		var currentWord = data.word;
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
+		//ctx.fillStyle = "rgba(0,0,0,0)";
+		//ctx.fillRect(0,0,canvas[0].width,canvas[0].height);
 		isItMyTurn(currentPlayerID, currentWord);
 	});
 
