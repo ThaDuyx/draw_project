@@ -157,11 +157,12 @@ function startTimer(room){
     }
     var countdown = 100;
     var interval = setInterval(function() {
-        if (roomDict[room] == undefined || roomDict[room] == null){
+        if (roomDict[room] == undefined || roomDict[room] == null) console.log("I am inside interval!!!!"); clearInterval(interval); return;
+        /*{
             console.log("I am inside interval!!!!");
             clearInterval(interval);
             return;
-        }
+        }*/
         countdown--;
         io.to(room).emit('timer', { countdown: countdown });
         if (countdown == 0){
