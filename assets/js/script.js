@@ -130,9 +130,11 @@ $(function(){
 	},10000);
 
 	function drawLine(fromx, fromy, tox, toy){
+		ctx.beginPath();
 		ctx.moveTo(fromx, fromy);
 		ctx.lineTo(tox, toy);
 		ctx.stroke();
+
 	}
 
 	var form = document.getElementById('form');
@@ -200,7 +202,6 @@ $(function(){
 	socket.on('onNewTurn', (data) => {
 		var currentPlayerID = data.currentPlayer;
 		var currentWord = data.word;
-
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		isItMyTurn(currentPlayerID, currentWord);
 	});
