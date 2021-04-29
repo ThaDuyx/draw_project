@@ -221,10 +221,13 @@ $(function(){
 	}
 
 	function isItMyTurn(id) {
+		var item = document.getElementById("turn");
 		if (id == socket.id){
 			myTurn = true;
+			item.textContent = "It is your turn. Draw the shown word below!";
 		}else{
 			myTurn = false;
+			item.textContent = "It is not your turn. You can try and guess the current word by using the chat.";
 		}
 	}
 
