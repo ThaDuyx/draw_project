@@ -75,7 +75,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-      console.log(roomDict);
+      //console.log(roomDict);
+      console.log(roomDict["rr"]);
   });
 
   socket.on('disconnecting', function(){
