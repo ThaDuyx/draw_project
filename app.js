@@ -27,6 +27,8 @@ class RoomController{
 var roomDict = new Object();
 var maxPlayers = 2;
 
+var possibleWords = ["Elephant", "Airplane", "Pikachu", "House", "Stickman"];
+
 app.use(express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
@@ -48,7 +50,7 @@ io.on('connection', (socket) => {
     var success = false;
 
     if(roomDict[roomName] == null){
-      roomDict[roomName] = new RoomController(new Array(), new Object(), "", 1, false, 0, new Array());
+      roomDict[roomName] = new RoomController(new Array(), new Object(), "", 1, false, 0, possibleWords);
       success = true;
     }else{
       if (roomDict[roomName].amountOfPlayers != maxPlayers){
@@ -154,8 +156,17 @@ function changeTurn(roomName){
         currentTurn = 0;
     }
     roomDict[roomName].currentPlayerTurn = currentTurn;
+    var newWord = pickRandomWord();
 
-    io.to(roomName).emit('onNewTurn', roomDict[roomName].players[currentTurn]);
+    var data = {"currentPlayer": roomDict[roomName].players[currentTurn], "word": newWord}
+
+    io.to(roomName).emit('onNewTurn', data);
+    //io.to(roomName).emit('onNewTurn', roomDict[roomName].players[currentTurn]);
+}
+
+function pickRandomWord(){
+    var word = possibleWords[Math.floor(Math.random() * possibleWords.length)];
+    return word;
 }
 
 function startTimer(room){

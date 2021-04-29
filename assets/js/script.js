@@ -197,9 +197,12 @@ $(function(){
 		}
 	});
 
-	socket.on('onNewTurn', function(id){
+	socket.on('onNewTurn', function(data){
+		var currentPlayerID = data.currentPlayer;
+		var currentWord = data.word;
+
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		isItMyTurn(id);
+		isItMyTurn(id, currentWord);
 	});
 
 	$('#startGame').click(function() {
@@ -220,14 +223,17 @@ $(function(){
 		item.textContent = playerCount + "/" + maxPlayers;
 	}
 
-	function isItMyTurn(id) {
-		var item = document.getElementById("turn");
+	function isItMyTurn(id, word) {
+		var turnText = document.getElementById("turn");
+		var wordText = document.getElementById("word");
 		if (id == socket.id){
 			myTurn = true;
-			item.textContent = "It is your turn. Draw the shown word below!";
+			turnText.textContent = "It is your turn. Draw the shown word below!";
+			wordText = "Word to draw: " + word;
 		}else{
 			myTurn = false;
-			item.textContent = "It is not your turn. You can try and guess the current word by using the chat.";
+			turnText.textContent = "It is not your turn. You can try and guess the current word by using the chat.";
+			wordText = "Word to draw: hidden";
 		}
 	}
 
