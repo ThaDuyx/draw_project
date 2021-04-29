@@ -35,6 +35,8 @@ $(function(){
 
 	var myTurn = false;
 
+	var currentWord = null;
+
 
 	socket.on('onJoinSuccess', function (e) {
 		console.log("Join successfull");
@@ -157,6 +159,12 @@ $(function(){
 
 	socket.on('chat message', function(msg) {
 		var item = document.createElement('li');
+
+		if (msg.includes("/g")){
+			var guess = msg.substring(3);
+			console.log("Guess: " + guess);
+		}
+
 		item.textContent = msg;
 		messages.appendChild(item);
 		window.scrollTo(0, document.body.scrollHeight);
@@ -202,7 +210,7 @@ $(function(){
 
 	socket.on('onNewTurn', (data) => {
 		var currentPlayerID = data.currentPlayer;
-		var currentWord = data.word;
+		currentWord = data.word;
 		isItMyTurn(currentPlayerID, currentWord);
 		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 	});
