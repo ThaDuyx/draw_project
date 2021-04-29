@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
           var index = roomDict[roomName].players.indexOf(socket.id);
           if (index > -1) {
               roomDict[roomName].players.splice(index, 1);
-              roomDict[roomName].playerScore.delete(socket.id);
+              delete roomDict[roomName].playerScore[socket.id];
           }
 
           var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
