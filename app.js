@@ -135,7 +135,9 @@ io.sockets.on('connection', function (socket) {
 });
 
 function changeTurn(roomName){
-    if (roomDict[roomName] == undefined || roomDict[roomName] == null) return;
+    if (roomDict[roomName] == undefined || roomDict[roomName] == null){
+        return;
+    }
     var currentTurn = roomDict[roomName].currentPlayerTurn;
     if (currentTurn != maxPlayers-1){
         currentTurn++;
@@ -148,17 +150,21 @@ function changeTurn(roomName){
 }
 
 function startTimer(room){
-    if (roomDict[room] == undefined || roomDict[room] == null) return;
+    if (roomDict[room] == undefined || roomDict[room] == null){
+        return;
+    }
     var countdown = 10;
     var interval = setInterval(function() {
-        if (roomDict[room] == undefined || roomDict[room] == null) clearInterval(interval); return;
+        /*if (roomDict[room] == undefined || roomDict[room] == null){
+            clearInterval(interval);
+            return;
+        } */
         countdown--;
         io.to(room).emit('timer', { countdown: countdown });
         if (countdown == 0){
             clearInterval(interval);
             changeTurn(room);
             startTimer(room);
-            //Emit 'nextTurn' and let server handle the upcoming users' turn
         }
     }, 1000);
 }
