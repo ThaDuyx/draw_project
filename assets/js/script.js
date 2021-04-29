@@ -203,8 +203,8 @@ $(function(){
 	socket.on('onNewTurn', (data) => {
 		var currentPlayerID = data.currentPlayer;
 		var currentWord = data.word;
-		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 		isItMyTurn(currentPlayerID, currentWord);
+		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 	});
 
 	$('#startGame').click(function() {
