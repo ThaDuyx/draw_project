@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 
 
 class RoomController{
-  constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList){
+  constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList, currentInterval){
 
     this.players = players;
     this.playerScore = playerScore;
@@ -21,6 +21,7 @@ class RoomController{
     this.gameHasStarted = gameHasStarted;
     this.currentPlayerTurn = currentPlayerTurn;
     this.wordList = wordList;
+    this.currentInterval = currentInterval;
   }
 }
 
@@ -50,7 +51,7 @@ io.on('connection', (socket) => {
     var success = false;
 
     if(roomDict[roomName] == null){
-      roomDict[roomName] = new RoomController(new Array(), new Object(), "", 1, false, 0, possibleWords);
+      roomDict[roomName] = new RoomController(new Array(), new Object(), "", 1, false, 0, possibleWords, null);
       success = true;
     }else{
       if (roomDict[roomName].amountOfPlayers != maxPlayers){
@@ -110,8 +111,12 @@ io.on('connection', (socket) => {
   });
 
   socket.on('chat message', (data) => {
-    //console.log('message: ' + data.msg);
+    console.log('message: ' + data.msg);
     io.to(data.room).emit('chat message', data.msg);
+  });
+
+  socket.on('correctGuess', (data) => {
+
   });
 
   socket.on('start', data => {
@@ -120,7 +125,7 @@ io.on('connection', (socket) => {
       roomDict[room].gameHasStarted = true;
       io.to(room).emit('onStartSuccess', true);
       changeTurn(room);
-      startTimer(room);
+      //startTimer(room);
     }else{
       io.to(socket.id).emit('onStartFail');
     }
@@ -161,6 +166,10 @@ function changeTurn(roomName){
     var data = {"currentPlayer": roomDict[roomName].players[currentTurn], "word": newWord}
 
     io.to(roomName).emit('onNewTurn', data);
+    if (roomDict[roomName].currentInterval != null){
+        clearInterval(roomDict[roomName].currentInterval);
+    }
+    startTimer(roomName);
     //io.to(roomName).emit('onNewTurn', roomDict[roomName].players[currentTurn]);
 }
 
@@ -183,10 +192,11 @@ function startTimer(room){
         countdown--;
         io.to(room).emit('timer', { countdown: countdown });
         if (countdown == 0){
-            clearInterval(interval);
+            //clearInterval(interval);
             changeTurn(room);
-            startTimer(room);
+            //startTimer(room);
         }
     }, 1000);
+    roomDict[room].currentInterval = interval;
 }
 

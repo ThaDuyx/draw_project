@@ -160,12 +160,25 @@ $(function(){
 	socket.on('chat message', function(msg) {
 		var item = document.createElement('li');
 
+		item.textContent = msg;
+
 		if (msg.includes("/g")){
 			var guess = msg.substring(3);
-			console.log("Guess: " + guess);
+			if (currentWord != null){
+				if (guess == currentWord){ //guessed correct
+					var text = socket.id + " Guessed the correct word!: " + guess;
+					text.fontcolor("green");
+					item.textContent = text;
+
+				}else{ //guessed wrong
+					var text = socket.id + " Guessed the following: " + guess;
+					text.fontcolor("blue");
+					item.textContent = text;
+				}
+
+			}
 		}
 
-		item.textContent = msg;
 		messages.appendChild(item);
 		window.scrollTo(0, document.body.scrollHeight);
 	});
@@ -214,6 +227,7 @@ $(function(){
 		isItMyTurn(currentPlayerID, currentWord);
 		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 	});
+
 
 	$('#startGame').click(function() {
 		ctx.fillStyle = "red";
