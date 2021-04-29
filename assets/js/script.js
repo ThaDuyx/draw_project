@@ -112,7 +112,7 @@ $(function(){
 		}
 	});
 
-	// Remove inactive clients after 10 seconds of inactivity
+	// Remove inactive clients after inactivity
 	setInterval(function(){
 
 		for(ident in clients){
@@ -130,11 +130,6 @@ $(function(){
 	},10000);
 
 	function drawLine(fromx, fromy, tox, toy){
-		/*ctx.beginPath();
-		ctx.moveTo(fromx, fromy);
-		ctx.lineTo(tox, toy);
-		ctx.stroke();*/
-
 		ctx.beginPath();
 		ctx.moveTo(fromx, fromy);
 		ctx.lineTo(tox, toy);
@@ -209,8 +204,6 @@ $(function(){
 		var currentPlayerID = data.currentPlayer;
 		var currentWord = data.word;
 		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
-		//ctx.fillStyle = "rgba(0,0,0,0)";
-		//ctx.fillRect(0,0,canvas[0].width,canvas[0].height);
 		isItMyTurn(currentPlayerID, currentWord);
 	});
 
@@ -242,6 +235,7 @@ $(function(){
 			wordText.textContent= "Word to draw: " + word;
 		}else{
 			myTurn = false;
+			drawing = false; //in case you are still drawing when your turn end.
 			turnText.textContent = "It is not your turn. You can try and guess the current word by using the chat.";
 			wordText.textContent = "Word to draw: hidden";
 		}
