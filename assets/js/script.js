@@ -130,10 +130,16 @@ $(function(){
 	},10000);
 
 	function drawLine(fromx, fromy, tox, toy){
+		/*ctx.beginPath();
+		ctx.moveTo(fromx, fromy);
+		ctx.lineTo(tox, toy);
+		ctx.stroke();*/
+
 		ctx.beginPath();
 		ctx.moveTo(fromx, fromy);
 		ctx.lineTo(tox, toy);
 		ctx.stroke();
+		ctx.closePath();
 
 	}
 
