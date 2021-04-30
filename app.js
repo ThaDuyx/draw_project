@@ -120,24 +120,33 @@ io.on('connection', (socket) => {
     console.log('message: ' + data.msg);
     var msg = data.msg;
     var text = "";
+    var currentDrawingPlayer = roomDict[data.room].players[roomDict[data.room].currentPlayerTurn];
       if (msg.includes("/g")) {
-          var guess = msg.substring(3);
-          guess.localeCompare(roomDict[data.room].currentThingToGuess, undefined, { sensitivity: 'accent' })
-          if (roomDict[data.room].currentThingToGuess != null) {
-              if (guess.localeCompare(roomDict[data.room].currentThingToGuess, undefined, { sensitivity: 'accent' })) { //guessed correct
-                  text = socket.id + " Guessed the correct word!: " + guess;
-                  text.fontcolor("green");
-                  changeTurn(data.room);
 
-              } else { //guessed wrong
-                  text = socket.id + " Guessed the following: " + guess;
-                  text.fontcolor("red");
+          if (socket.id == currentDrawingPlayer){ //current drawing player shouldnt be able to guess
+              io.to(socket.id).emit('chat message', "You can't guess when you are the one drawing!");
+          }else{
+              var guess = msg.substring(3);
+              if (roomDict[data.room].currentThingToGuess != null) {
+                  if (guess.toLowerCase() == roomDict[data.room].currentThingToGuess.toLowerCase()) { //guessed correct
+                      text = socket.id + " Guessed the correct word!: " + guess;
+                      text.fontcolor("green");
+                      changeTurn(data.room);
+
+                  } else { //guessed wrong
+                      text = socket.id + " Guessed the following: " + guess;
+                      text.fontcolor("red");
+                  }
+
+                  io.to(data.room).emit('chat message', text);
+
               }
           }
       }else{
           text = msg;
+          io.to(data.room).emit('chat message', text);
       }
-    io.to(data.room).emit('chat message', text);
+
   });
 
 
