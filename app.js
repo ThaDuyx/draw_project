@@ -18,7 +18,7 @@ const port = process.env.PORT || 3000;
 
 
 class RoomController{
-  constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList, currentInterval){
+  constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList, currentInterval, gameHasFinished){
 
     this.players = players;
     this.playerScore = playerScore;
@@ -28,6 +28,7 @@ class RoomController{
     this.currentPlayerTurn = currentPlayerTurn;
     this.wordList = wordList;
     this.currentInterval = currentInterval;
+    this.gameHasFinished = gameHasFinished;
   }
 }
 
@@ -59,7 +60,7 @@ io.on('connection', (socket) => {
     var success = false;
 
     if(roomDict[roomName] == null){
-      roomDict[roomName] = new RoomController(new Array(), new Array(), "", 1, false, 0, possibleWords, null);
+      roomDict[roomName] = new RoomController(new Array(), new Array(), "", 1, false, 0, possibleWords, null,false);
       success = true;
     }else{
       if (roomDict[roomName].amountOfPlayers != maxPlayers){
@@ -176,34 +177,15 @@ io.on('connection', (socket) => {
               roomDict[room].playerScore[i].score += 5;
           }
 
-          if (roomDict[room].playerScore[i].score >= finishPoints) gameFinished = true;
+          if (roomDict[room].playerScore[i].score >= finishPoints) roomDict[room].gameHasFinished = true;
       }
 
       var data = {'playerScores':roomDict[room].playerScore};
       io.to(room).emit('updateScore', data);
-
-
-     /* //finding winner
-      if (gameFinished){
-          var currentMaxPoints = null;
-          var currentChosenWinner = null;
-
-          for (var i = 0; i < roomDict[room].playerScore.length; i++) {
-              if (currentMaxPoints == null || roomDict[room].playerScore[i].score > currentMaxPoints){
-                  currentMaxPoints = roomDict[room].playerScore[i].score;
-                  currentChosenWinner = roomDict[room].playerScore[i].id;
-              }
-          }
-
-          io.to(room).emit('gameFinished', currentChosenWinner);
-
-      }*/
   }
 
   function checkFinishGame(room){
-      console.log("i am checking if game is finished!");
-      var gameFinished = false;
-      if (gameFinished){
+      if (roomDict[room].gameHasFinished){
           var currentMaxPoints = null;
           var currentChosenWinner = null;
 
