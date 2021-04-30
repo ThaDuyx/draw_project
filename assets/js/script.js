@@ -164,23 +164,6 @@ $(function(){
 
 		item.textContent = msg;
 
-		/*if (msg.includes("/g")){
-			var guess = msg.substring(3);
-			if (currentWord != null){
-				if (guess == currentWord){ //guessed correct
-					var text = socket.id + " Guessed the correct word!: " + guess;
-					text.fontcolor("green");
-					item.textContent = text;
-					//change turn
-
-				}else{ //guessed wrong
-					var text = socket.id + " Guessed the following: " + guess;
-					text.fontcolor("red");
-					item.textContent = text;
-				}
-			}
-		}*/
-
 		messages.appendChild(item);
 		window.scrollTo(0, document.body.scrollHeight);
 	});

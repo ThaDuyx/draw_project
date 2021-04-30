@@ -122,8 +122,9 @@ io.on('connection', (socket) => {
     var text = "";
       if (msg.includes("/g")) {
           var guess = msg.substring(3);
+          guess.localeCompare(roomDict[data.room].currentThingToGuess, undefined, { sensitivity: 'accent' })
           if (roomDict[data.room].currentThingToGuess != null) {
-              if (guess == roomDict[data.room].currentThingToGuess) { //guessed correct
+              if (guess.localeCompare(roomDict[data.room].currentThingToGuess, undefined, { sensitivity: 'accent' })) { //guessed correct
                   text = socket.id + " Guessed the correct word!: " + guess;
                   text.fontcolor("green");
                   changeTurn(data.room);
