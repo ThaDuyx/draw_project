@@ -206,7 +206,7 @@ function startTimer(room){
     if (roomDict[room] == undefined || roomDict[room] == null){
         return;
     }
-    var countdown = 10;
+    var countdown = 45;
     var interval = setInterval(function() {
         if (roomDict[room] == undefined || roomDict[room] == null)
         {
