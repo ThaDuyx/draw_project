@@ -169,6 +169,7 @@ io.on('connection', (socket) => {
           }
 
           if(roomDict[room].playerScore[i].id == roomDict[room].players[roomDict[room].currentPlayerTurn].id){
+              console.log("i am giving score to the drawer!!!!!!!!");
               //the one who was drawing gets half the points to encourage him to draw good
               roomDict[room].playerScore[i].score += 5;
           }
