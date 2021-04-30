@@ -37,6 +37,8 @@ $(function(){
 
 	var currentWord = null;
 
+	var timeoutTime = 100000;
+
 
 	socket.on('onJoinSuccess', function (e) {
 		console.log("Join successfull");
@@ -118,7 +120,7 @@ $(function(){
 	setInterval(function(){
 
 		for(ident in clients){
-			if($.now() - clients[ident].updated > 10000){
+			if($.now() - clients[ident].updated > timeoutTime){
 				
 				// Last update was more than 10 seconds ago. 
 				// This user has probably closed the page
@@ -129,7 +131,7 @@ $(function(){
 			}
 		}
 		
-	},10000);
+	},timeoutTime);
 
 	function drawLine(fromx, fromy, tox, toy){
 		ctx.beginPath();
