@@ -212,6 +212,10 @@ $(function(){
 		updatePlayerScore(data);
 	});
 
+	socket.on('removeScore', function(id){
+		document.getElementById(id).remove();
+	});
+
 
 	$('#startGame').click(function() {
 		ctx.fillStyle = "red";

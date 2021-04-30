@@ -113,10 +113,11 @@ io.on('connection', (socket) => {
               roomDict[roomName].players.splice(index, 1);
           }
           //then removing from score array
-          for (var i = 0; i < roomDict[roomName].playerScores.length; i++) {
-              var obj = roomDict[roomName].playerScores[i];
+          for (var i = 0; i < roomDict[roomName].playerScore.length; i++) {
+              var obj = roomDict[roomName].playerScore[i];
               if (socket.id == obj.id){
-                  roomDict[roomName].playerScores.splice(i, 1);
+                  roomDict[roomName].playerScore.splice(i, 1);
+                  io.to(roomName).emit('removeScore', socket.id);
               }
           }
 
