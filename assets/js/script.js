@@ -248,6 +248,7 @@ $(function(){
 				item.setAttribute('id', obj.id);
 				scoreContainer.appendChild(item);
 			}else{
+				console.log("im here! and score to update is: " + obj.score);
 				document.getElementById(obj.id).textContent = obj.id + ": " + obj.score;
 			}
 		}
