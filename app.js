@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
                   if (guess.toLowerCase() == roomDict[data.room].currentThingToGuess.toLowerCase()) { //guessed correct
                       text = socket.id + " Guessed the correct word!: " + guess;
                       text.fontcolor("green");
-
+                      givePoints(socket.id, data.room);
                       changeTurn(data.room);
 
                   } else { //guessed wrong
