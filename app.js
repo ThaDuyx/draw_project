@@ -32,7 +32,7 @@ class RoomController{
 }
 
 var roomDict = new Object();
-var maxPlayers = 2;
+var maxPlayers = 4;
 
 var possibleWords = ["Elephant", "Airplane", "Pikachu", "House", "Stickman"];
 
