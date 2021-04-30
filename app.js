@@ -154,7 +154,7 @@ io.on('connection', (socket) => {
                   }
 
                   io.to(data.room).emit('chat message', text);
-
+                  checkFinishGame(data.room);
               }
           }
       }else{
@@ -181,8 +181,28 @@ io.on('connection', (socket) => {
           if (roomDict[room].playerScore[i].score >= finishPoints) gameFinished = true;
       }
 
+      var data = {'playerScores':roomDict[room].playerScore};
+      io.to(room).emit('updateScore', data);
 
-      //finding winner
+
+     /* //finding winner
+      if (gameFinished){
+          var currentMaxPoints = null;
+          var currentChosenWinner = null;
+
+          for (var i = 0; i < roomDict[room].playerScore.length; i++) {
+              if (currentMaxPoints == null || roomDict[room].playerScore[i].score > currentMaxPoints){
+                  currentMaxPoints = roomDict[room].playerScore[i].score;
+                  currentChosenWinner = roomDict[room].playerScore[i].id;
+              }
+          }
+
+          io.to(room).emit('gameFinished', currentChosenWinner);
+
+      }*/
+  }
+
+  function checkFinishGame(room){
       if (gameFinished){
           var currentMaxPoints = null;
           var currentChosenWinner = null;
@@ -197,15 +217,6 @@ io.on('connection', (socket) => {
           io.to(room).emit('gameFinished', currentChosenWinner);
 
       }
-
-
-
-
-
-
-      var data = {'playerScores':roomDict[room].playerScore};
-      io.to(room).emit('updateScore', data);
-
   }
 
 
