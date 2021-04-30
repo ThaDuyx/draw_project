@@ -11,6 +11,11 @@ const port = process.env.PORT || 3000;
 // serveren til at crashe ved at lave sine egne emits. Vi skal nu beslutte hvor meget vi skal lave om sådan at clienten ikke kan crashe serveren mere.
 //
 
+//EOW!! Næste gang skal vi spørge læreren om at det er nødvendigt at gå ind i så meget security som vi var ved.
+//Vil det være nok blot at nævne det til eksamen at man skal passe på med kode på client? Eller skal man rent faktisk
+// gå in og imlpementere en mere sikker kode for at få flere point????????
+
+
 
 class RoomController{
   constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList, currentInterval){
@@ -113,12 +118,26 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (data) => {
     console.log('message: ' + data.msg);
-    io.to(data.room).emit('chat message', data.msg);
+    var msg = data.msg;
+    var text = "";
+      if (msg.includes("/g")) {
+          var guess = msg.substring(3);
+          if (roomDict[data.room].currentThingToGuess != null) {
+              if (guess == roomDict[data.room].currentThingToGuess) { //guessed correct
+                  text = socket.id + " Guessed the correct word!: " + guess;
+                  text.fontcolor("green");
+                  changeTurn(data.room);
+
+              } else { //guessed wrong
+                  text = socket.id + " Guessed the following: " + guess;
+                  text.fontcolor("red");
+              }
+          }
+      }
+    io.to(data.room).emit('chat message', text);
   });
 
-  socket.on('correctGuess', (data) => {
 
-  });
 
   socket.on('start', data => {
     var room = data.room;
@@ -163,6 +182,8 @@ function changeTurn(roomName){
     }
     roomDict[roomName].currentPlayerTurn = currentTurn;
     var newWord = pickRandomWord();
+
+    roomDict[roomName].currentThingToGuess = newWord;
 
     var data = {"currentPlayer": roomDict[roomName].players[currentTurn], "word": newWord}
 

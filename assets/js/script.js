@@ -16,11 +16,7 @@ $(function(){
 		instructions = $('#instructions');
 	
 	// Generate an unique ID
-	var id = Math.round($.now()*Math.random());
-
-	const testing = 5;
-
-
+	const id = Math.round($.now()*Math.random());
 
 	// A flag for drawing activity
 	var drawing = false;
@@ -149,7 +145,6 @@ $(function(){
 
 	form.addEventListener('submit', function(e) {
 		e.preventDefault();
-		console.log(testing);
 		if (input.value) {
 
 			socket.emit('chat message',{
@@ -169,22 +164,22 @@ $(function(){
 
 		item.textContent = msg;
 
-		if (msg.includes("/g")){
+		/*if (msg.includes("/g")){
 			var guess = msg.substring(3);
 			if (currentWord != null){
 				if (guess == currentWord){ //guessed correct
 					var text = socket.id + " Guessed the correct word!: " + guess;
 					text.fontcolor("green");
 					item.textContent = text;
+					//change turn
 
 				}else{ //guessed wrong
 					var text = socket.id + " Guessed the following: " + guess;
-					text.fontcolor("blue");
+					text.fontcolor("red");
 					item.textContent = text;
 				}
-
 			}
-		}
+		}*/
 
 		messages.appendChild(item);
 		window.scrollTo(0, document.body.scrollHeight);
