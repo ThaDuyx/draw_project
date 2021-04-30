@@ -18,6 +18,12 @@ $(function(){
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
 
+	const testing = 5;
+
+	while(true){
+		console.log(testing);
+	}
+
 	// A flag for drawing activity
 	var drawing = false;
 
