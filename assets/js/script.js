@@ -232,13 +232,18 @@ $(function(){
 	function updatePlayerScore(data){
 		var scoreContainer = document.getElementById('playerScores');
 
-		if (document.getElementById(data.id) == null || document.getElementById(data.id) == undefined ){
-			var item = document.createElement('li');
-			item.textContent = data.id + ": " + data.score;
-			item.setAttribute('id', data.id);
-			scoreContainer.appendChild(item);
-		}else{
-			document.getElementById(data.id).textContent = data.id + ": " + data.score;
+		var objectArray = data.playerScores;
+
+		for (var i = 0; i < objectArray.length; i++) {
+			var obj = objectArray[i];
+			if (document.getElementById(obj.id) == null || document.getElementById(obj.id) == undefined ){
+				var item = document.createElement('li');
+				item.textContent = obj.id + ": " + obj.score;
+				item.setAttribute('id', obj.id);
+				scoreContainer.appendChild(item);
+			}else{
+				document.getElementById(obj.id).textContent = obj.id + ": " + obj.score;
+			}
 		}
 	}
 

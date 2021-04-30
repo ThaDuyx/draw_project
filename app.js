@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
     var success = false;
 
     if(roomDict[roomName] == null){
-      roomDict[roomName] = new RoomController(new Array(), new Object(), "", 1, false, 0, possibleWords, null);
+      roomDict[roomName] = new RoomController(new Array(), new Array(), "", 1, false, 0, possibleWords, null);
       success = true;
     }else{
       if (roomDict[roomName].amountOfPlayers != maxPlayers){
@@ -77,11 +77,12 @@ io.on('connection', (socket) => {
       var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers};
       io.to(roomName).emit('user joined', data);
 
-      var data1 = {'id':socket.id, 'score':0};
-      io.to(roomName).emit('updateScore', data1);
-
       roomDict[roomName].players.push(socket.id);
-      roomDict[roomName].playerScore[socket.id] = 0;
+      roomDict[roomName].playerScore.push({'id':socket.id,'score':0});
+
+
+      var data1 = {'playerScores':roomDict[roomName].playerScore};
+      io.to(roomName).emit('updateScore', data1);
     }
 
   });
@@ -106,10 +107,17 @@ io.on('connection', (socket) => {
       if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
       else{
           //removing from room
+          //first removing from player array
           var index = roomDict[roomName].players.indexOf(socket.id);
           if (index > -1) {
               roomDict[roomName].players.splice(index, 1);
-              delete roomDict[roomName].playerScore[socket.id];
+          }
+          //then removing from score array
+          for (var i = 0; i < roomDict[roomName].playerScores.length; i++) {
+              var obj = roomDict[roomName].playerScores[i];
+              if (socket.id == obj.id){
+                  roomDict[roomName].playerScores.splice(i, 1);
+              }
           }
 
           var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
