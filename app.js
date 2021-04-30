@@ -173,7 +173,7 @@ io.on('connection', (socket) => {
       }
 
       var data = {'playerScores':roomDict[room].playerScore};
-      io.to(roomName).emit('updateScore', data);
+      io.to(room).emit('updateScore', data);
 
   }
 
