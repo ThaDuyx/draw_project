@@ -20,9 +20,7 @@ $(function(){
 
 	const testing = 5;
 
-	while(true){
-		console.log(testing);
-	}
+
 
 	// A flag for drawing activity
 	var drawing = false;
@@ -151,6 +149,7 @@ $(function(){
 
 	form.addEventListener('submit', function(e) {
 		e.preventDefault();
+		console.log(testing);
 		if (input.value) {
 
 			socket.emit('chat message',{
