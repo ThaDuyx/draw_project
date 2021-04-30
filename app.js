@@ -172,7 +172,6 @@ io.on('connection', (socket) => {
 
           var currentDrawingPlayer = roomDict[room].players[roomDict[room].currentPlayerTurn];
           if(roomDict[room].playerScore[i].id == currentDrawingPlayer){
-              console.log("i am giving score to the drawer!!!!!!!!");
               //the one who was drawing gets half the points to encourage him to draw good
               roomDict[room].playerScore[i].score += 5;
           }
@@ -202,6 +201,7 @@ io.on('connection', (socket) => {
   }
 
   function checkFinishGame(room){
+      console.log("i am checking if game is finished!");
       var gameFinished = false;
       if (gameFinished){
           var currentMaxPoints = null;
