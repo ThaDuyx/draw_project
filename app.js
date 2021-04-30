@@ -168,7 +168,7 @@ io.on('connection', (socket) => {
               roomDict[room].playerScore[i].score += 10;
           }
 
-          var currentDrawingPlayer = roomDict[data.room].players[roomDict[data.room].currentPlayerTurn];
+          var currentDrawingPlayer = roomDict[room].players[roomDict[room].currentPlayerTurn];
           if(roomDict[room].playerScore[i].id == currentDrawingPlayer){
               console.log("i am giving score to the drawer!!!!!!!!");
               //the one who was drawing gets half the points to encourage him to draw good
