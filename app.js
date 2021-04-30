@@ -165,7 +165,6 @@ io.on('connection', (socket) => {
   });
 
   function givePoints(idOfGuesser, room){
-      var gameFinished = false;
       for (var i = 0; i < roomDict[room].playerScore.length; i++) {
           if (roomDict[room].playerScore[i].id == idOfGuesser){
               roomDict[room].playerScore[i].score += 10;
@@ -203,6 +202,7 @@ io.on('connection', (socket) => {
   }
 
   function checkFinishGame(room){
+      var gameFinished = false;
       if (gameFinished){
           var currentMaxPoints = null;
           var currentChosenWinner = null;
