@@ -208,6 +208,10 @@ $(function(){
 		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 	});
 
+	socket.on('updateScore', (data) =>{
+		updatePlayerScore(data);
+	});
+
 
 	$('#startGame').click(function() {
 		ctx.fillStyle = "red";
@@ -221,6 +225,21 @@ $(function(){
 		item.textContent = msg;
 		messages.appendChild(item);
 		//window.scrollTo(0, document.body.scrollHeight);
+		//this line caused problems on some computers where the whole page would jump up.
+		//removing it didn't change any behaviour of the program.
+	}
+
+	function updatePlayerScore(data){
+		var scoreContainer = document.getElementById('playerScores');
+
+		if (document.getElementById(data.id) == null || document.getElementById(data.id) == undefined ){
+			var item = document.createElement('li');
+			item.textContent = data.id + ": " + data.score;
+			item.setAttribute('id', data.id);
+			scoreContainer.appendChild(item);
+		}else{
+			document.getElementById(data.id).textContent = data.id + ": " + data.score;
+		}
 	}
 
 	function updatePlayerCount(playerCount, maxPlayers){

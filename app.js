@@ -77,6 +77,9 @@ io.on('connection', (socket) => {
       var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers};
       io.to(roomName).emit('user joined', data);
 
+      var data1 = {'id':socket.id, 'score':0};
+      io.to(roomName).emit('updateScore', data1);
+
       roomDict[roomName].players.push(socket.id);
       roomDict[roomName].playerScore[socket.id] = 0;
     }
