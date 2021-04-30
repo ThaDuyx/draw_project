@@ -143,6 +143,7 @@ io.on('connection', (socket) => {
                   if (guess.toLowerCase() == roomDict[data.room].currentThingToGuess.toLowerCase()) { //guessed correct
                       text = socket.id + " Guessed the correct word!: " + guess;
                       text.fontcolor("green");
+
                       changeTurn(data.room);
 
                   } else { //guessed wrong
@@ -161,6 +162,20 @@ io.on('connection', (socket) => {
 
   });
 
+  function givePoints(idOfGuesser, room){
+      for (var i = 0; i < roomDict[room].playerScore.length; i++) {
+          if (roomDict[room].playerScore[i].id == idOfGuesser){
+              roomDict[room].playerScore[i].score += 10;
+          }else if(roomDict[room].playerScore[i].id == roomDict[room].players[roomDict[room].currentPlayerTurn].id){
+              //the one who was drawing gets half the points to encourage him to draw good
+              roomDict[room].playerScore[i].score += 5;
+          }
+      }
+
+      var data = {'playerScores':roomDict[roomName].playerScore};
+      io.to(roomName).emit('updateScore', data);
+
+  }
 
 
   socket.on('start', data => {
