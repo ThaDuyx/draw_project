@@ -34,6 +34,8 @@ class RoomController{
 var roomDict = new Object();
 var maxPlayers = 3;
 
+var finishPoints = 20; //points required to win the game
+
 var possibleWords = ["Elephant", "Airplane", "Pikachu", "House", "Stickman"];
 
 app.use(express.static(__dirname + '/assets'));
@@ -163,6 +165,7 @@ io.on('connection', (socket) => {
   });
 
   function givePoints(idOfGuesser, room){
+      var gameFinished = false;
       for (var i = 0; i < roomDict[room].playerScore.length; i++) {
           if (roomDict[room].playerScore[i].id == idOfGuesser){
               roomDict[room].playerScore[i].score += 10;
@@ -174,7 +177,31 @@ io.on('connection', (socket) => {
               //the one who was drawing gets half the points to encourage him to draw good
               roomDict[room].playerScore[i].score += 5;
           }
+
+          if (roomDict[room].playerScore[i].score >= finishPoints) gameFinished = true;
       }
+
+
+      //finding winner
+      if (gameFinished){
+          var currentMaxPoints = null;
+          var currentChosenWinner = null;
+
+          for (var i = 0; i < roomDict[room].playerScore.length; i++) {
+              if (currentMaxPoints == null || roomDict[room].playerScore[i].score > currentMaxPoints){
+                  currentMaxPoints = roomDict[room].playerScore[i].score;
+                  currentChosenWinner = roomDict[room].playerScore[i].id;
+              }
+          }
+
+          io.to(room).emit('gameFinished', currentChosenWinner);
+
+      }
+
+
+
+
+
 
       var data = {'playerScores':roomDict[room].playerScore};
       io.to(room).emit('updateScore', data);

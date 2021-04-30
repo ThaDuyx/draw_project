@@ -218,6 +218,11 @@ $(function(){
 		document.getElementById(id).remove();
 	});
 
+	socket.on('gameFinished', function (chosenWinner) {
+		alert("The game has finished! The winner is: " + chosenWinner);
+		window.location.href = "http://130.225.170.90/"; //go to main page
+	});
+
 
 	$('#startGame').click(function() {
 		ctx.fillStyle = "red";
