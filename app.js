@@ -133,6 +133,8 @@ io.on('connection', (socket) => {
                   text.fontcolor("red");
               }
           }
+      }else{
+          text = msg;
       }
     io.to(data.room).emit('chat message', text);
   });
