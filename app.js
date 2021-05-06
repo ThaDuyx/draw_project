@@ -221,7 +221,7 @@ io.on('connection', (socket) => {
       roomDict[room].gameHasStarted = true;
       io.to(room).emit('onStartSuccess', true);
       changeTurn(room);
-      var data1 = {'playerScores':roomDict[roomName].playerScore};
+      var data1 = {'playerScores':roomDict[room].playerScore};
       io.to(room).emit('updateScore', data1);
       //startTimer(room);
     }else{
