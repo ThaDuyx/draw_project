@@ -92,7 +92,9 @@ io.on('connection', (socket) => {
       for (var i = 0; i < roomDict[roomName].players.length; i++) {
           var currentID = roomDict[roomName].players[i];
           //getting player number
-          var playerIndex = roomDict[roomName].players.indexOf(socket.id);
+          //var playerIndex = roomDict[roomName].players.indexOf(socket.id);
+
+          playerIndex = i;
 
           if (playerIndex == -1){
               console.log("could not find player in the array!");
