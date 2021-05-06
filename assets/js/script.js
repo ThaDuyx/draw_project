@@ -205,6 +205,7 @@ $(function(){
 			var message = "User Left: " + data.id;
 			createChatMessage(message);
 			updatePlayerCount(data.playerCount, data.maxPlayers);
+			updatePlayerNumber(playerNumber);
 		}
 	});
 
