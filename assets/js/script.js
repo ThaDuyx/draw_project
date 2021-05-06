@@ -187,6 +187,10 @@ $(function(){
 
 	socket.on('user joined', (data) => {
 		var message = "User joined: " + data.id;
+		var playerNumber = data.playerNumber;
+
+		document.getElementById("playerNumber").textContent = "Player" + playerNumber;
+
 		createChatMessage(message);
 		updatePlayerCount(data.playerCount, data.maxPlayers);
 
@@ -225,7 +229,6 @@ $(function(){
 
 
 	$('#startGame').click(function() {
-		ctx.fillStyle = "red";
 		socket.emit('start',{
 			'room':room
 		});
