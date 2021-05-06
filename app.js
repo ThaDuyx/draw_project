@@ -80,20 +80,29 @@ io.on('connection', (socket) => {
       roomDict[roomName].players.push(socket.id);
       roomDict[roomName].playerScore.push({'id':socket.id,'score':0});
 
-
-        for (var i = 0; i < roomDict[roomName].players.length; i++) {
-            var currentID = roomDict[roomName].players[i];
-            //getting player number
-            var playerNumber = roomDict[roomName].players.indexOf(socket.id) + 1;
-            var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'playerNumber': playerNumber};
-            io.to(currentID).emit('user joined', data);
-        }
+      updateInfo(roomName, true);
 
       var data1 = {'playerScores':roomDict[roomName].playerScore};
       io.to(roomName).emit('updateScore', data1);
     }
 
   });
+
+  function updateInfo(roomName, hasJoined){
+      for (var i = 0; i < roomDict[roomName].players.length; i++) {
+          var currentID = roomDict[roomName].players[i];
+          //getting player number
+          var playerNumber = roomDict[roomName].players.indexOf(socket.id) + 1;
+          var data;
+          if (hasJoined){
+              data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'playerNumber': playerNumber};
+              io.to(currentID).emit('user joined', data);
+          }else{
+              data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted, 'playerNumber':playerNumber};
+              io.to(currentID).emit('user left', data);
+          }
+      }
+  }
 
   socket.on('disconnect', () => {
       console.log(roomDict);
@@ -129,8 +138,9 @@ io.on('connection', (socket) => {
               }
           }
 
-          var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
-          io.to(roomName).emit('user left', data);
+          //var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
+          //io.to(roomName).emit('user left', data);
+          updateInfo(roomName, false);
       }
     }
 
