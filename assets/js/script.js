@@ -187,10 +187,8 @@ $(function(){
 
 	socket.on('user joined', (data) => {
 		var message = "User joined: " + data.id;
-		var playerNumber = data.playerNumber;
 
-
-		updatePlayerNumber(playerNumber);
+		updatePlayerNumber(data.playerNumber);
 
 		createChatMessage(message);
 		updatePlayerCount(data.playerCount, data.maxPlayers);
@@ -205,7 +203,7 @@ $(function(){
 			var message = "User Left: " + data.id;
 			createChatMessage(message);
 			updatePlayerCount(data.playerCount, data.maxPlayers);
-			updatePlayerNumber(playerNumber);
+			updatePlayerNumber(data.playerNumber);
 		}
 	});
 
