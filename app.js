@@ -37,7 +37,7 @@ var maxPlayers = 3;
 
 var finishPoints = 20; //points required to win the game
 
-var possibleWords = ["Elephant", "Airplane", "Pikachu", "House", "Stickman"];
+var possibleWords = ["Elephant", "Airplane", "Pikachu", "House", "Stickman", "Beaver", "Piano", "Computer", "Bottle", "Watch", "Printer", "Witch", "Couch", "Chair", "Mouse", "Car", "Dinner", "Running", "Father", "Falling", "Mirror"];
 
 app.use(express.static(__dirname + '/assets'));
 
