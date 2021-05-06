@@ -189,10 +189,8 @@ $(function(){
 		var message = "User joined: " + data.id;
 		var playerNumber = data.playerNumber;
 
-		if (document.getElementById("playerNumber").textContent.localeCompare("") == 0){
-			document.getElementById("playerNumber").textContent = "Player" + playerNumber;
-		}
 
+		updatePlayerNumber(playerNumber);
 
 		createChatMessage(message);
 		updatePlayerCount(data.playerCount, data.maxPlayers);
@@ -244,6 +242,12 @@ $(function(){
 		//window.scrollTo(0, document.body.scrollHeight);
 		//this line caused problems on some computers where the whole page would jump up.
 		//removing it didn't change any behaviour of the program.
+	}
+
+	function updatePlayerNumber(number){
+		if (document.getElementById("playerNumber").textContent.localeCompare("") == 0){
+			document.getElementById("playerNumber").textContent = "Player" + number;
+		}
 	}
 
 	function updatePlayerScore(data){

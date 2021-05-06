@@ -79,18 +79,25 @@ io.on('connection', (socket) => {
       
       roomDict[roomName].players.push(socket.id);
       roomDict[roomName].playerScore.push({'id':socket.id,'score':0});
-      
-      //getting player number
-      var playerNumber = roomDict[roomName].players.indexOf(socket.id) + 1;
 
-      var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'playerNumber': playerNumber};
-      io.to(roomName).emit('user joined', data);
+
+
+      roomDict[roomName].players.forEach(testFunction());
+
+
 
       var data1 = {'playerScores':roomDict[roomName].playerScore};
       io.to(roomName).emit('updateScore', data1);
     }
 
   });
+
+  function testFunction(item, index){
+      //getting player number
+      var playerNumber = roomDict[roomName].players.indexOf(socket.id) + 1;
+      var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'playerNumber': playerNumber};
+      io.to(item).emit('user joined', data);
+  }
 
   socket.on('disconnect', () => {
       console.log(roomDict);
