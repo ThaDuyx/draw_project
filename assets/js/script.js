@@ -187,6 +187,13 @@ $(function(){
 
 	socket.on('user joined', (data) => {
 		var message = "User joined: " + data.id;
+		var playerNumber = data.playerNumber;
+
+		if (document.getElementById("playerNumber").textContent.localeCompare("") == 0){
+			document.getElementById("playerNumber").textContent = "Player" + playerNumber;
+		}
+
+
 		createChatMessage(message);
 		updatePlayerCount(data.playerCount, data.maxPlayers);
 
@@ -225,7 +232,6 @@ $(function(){
 
 
 	$('#startGame').click(function() {
-		ctx.fillStyle = "red";
 		socket.emit('start',{
 			'room':room
 		});
@@ -249,12 +255,11 @@ $(function(){
 			var obj = objectArray[i];
 			if (document.getElementById(obj.id) == null || document.getElementById(obj.id) == undefined ){
 				var item = document.createElement('li');
-				item.textContent = obj.id + ": " + obj.score;
+				item.textContent = "Player" + (i+1) + ": " + obj.score;
 				item.setAttribute('id', obj.id);
 				scoreContainer.appendChild(item);
 			}else{
-				console.log("im here! and score to update is: " + obj.score);
-				document.getElementById(obj.id).textContent = obj.id + ": " + obj.score;
+				document.getElementById(obj.id).textContent = "Player" + (i+1) + ": " + obj.score;
 			}
 		}
 	}
