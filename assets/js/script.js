@@ -246,9 +246,7 @@ $(function(){
 	}
 
 	function updatePlayerNumber(number){
-		if (document.getElementById("playerNumber").textContent.localeCompare("") == 0){
-			document.getElementById("playerNumber").textContent = "Player" + number;
-		}
+		document.getElementById("playerNumber").textContent = "Player" + number;
 	}
 
 	function updatePlayerScore(data){
