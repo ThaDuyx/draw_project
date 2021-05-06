@@ -81,36 +81,11 @@ io.on('connection', (socket) => {
       roomDict[roomName].playerScore.push({'id':socket.id,'score':0});
 
       updateInfo(roomName, true);
-
-      var data1 = {'playerScores':roomDict[roomName].playerScore};
-      io.to(roomName).emit('updateScore', data1);
     }
 
   });
 
-  function updateInfo(roomName, hasJoined){
-      for (var i = 0; i < roomDict[roomName].players.length; i++) {
-          var currentID = roomDict[roomName].players[i];
-          //getting player number
-          //var playerIndex = roomDict[roomName].players.indexOf(socket.id);
 
-          playerIndex = i;
-
-          if (playerIndex == -1){
-              console.log("could not find player in the array!");
-          }
-
-          var playerNumber = playerIndex +1;
-          var data;
-          if (hasJoined){
-              data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'playerNumber': playerNumber};
-              io.to(currentID).emit('user joined', data);
-          }else{
-              data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted, 'playerNumber':playerNumber};
-              io.to(currentID).emit('user left', data);
-          }
-      }
-  }
 
   socket.on('disconnect', () => {
       console.log(roomDict);
@@ -188,6 +163,21 @@ io.on('connection', (socket) => {
 
   });
 
+    function updateInfo(roomName, hasJoined){
+        for (var i = 0; i < roomDict[roomName].players.length; i++) {
+            var currentID = roomDict[roomName].players[i];
+            var playerNumber = i + 1;
+            var data;
+            if (hasJoined){
+                data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'playerNumber': playerNumber};
+                io.to(currentID).emit('user joined', data);
+            }else{
+                data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted, 'playerNumber':playerNumber};
+                io.to(currentID).emit('user left', data);
+            }
+        }
+    }
+
   function givePoints(idOfGuesser, room){
       for (var i = 0; i < roomDict[room].playerScore.length; i++) {
           if (roomDict[room].playerScore[i].id == idOfGuesser){
@@ -231,6 +221,8 @@ io.on('connection', (socket) => {
       roomDict[room].gameHasStarted = true;
       io.to(room).emit('onStartSuccess', true);
       changeTurn(room);
+      var data1 = {'playerScores':roomDict[roomName].playerScore};
+      io.to(room).emit('updateScore', data1);
       //startTimer(room);
     }else{
       io.to(socket.id).emit('onStartFail');

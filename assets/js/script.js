@@ -256,7 +256,7 @@ $(function(){
 			var obj = objectArray[i];
 			if (document.getElementById(obj.id) == null || document.getElementById(obj.id) == undefined ){
 				var item = document.createElement('li');
-				item.textContent = "Player" + (i+1) + ": " + obj.score;
+				item.textContent = "Player" + (i+1) + " Score: " + obj.score;
 				item.setAttribute('id', obj.id);
 				scoreContainer.appendChild(item);
 			}else{
