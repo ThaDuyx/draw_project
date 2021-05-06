@@ -210,6 +210,7 @@ io.on('connection', (socket) => {
       if (roomDict[room].gameHasFinished){
           var currentMaxPoints = null;
           var currentChosenWinner = null;
+          var winnerPlayerNumber = 0;
 
           for (var i = 0; i < roomDict[room].playerScore.length; i++) {
               if (currentMaxPoints == null || roomDict[room].playerScore[i].score > currentMaxPoints){
@@ -218,7 +219,14 @@ io.on('connection', (socket) => {
               }
           }
 
-          io.to(room).emit('gameFinished', currentChosenWinner);
+          for (var i = 0; i < roomDict[room].players.length; i++) {
+              if (currentChosenWinner == roomDict[room].players[i]){
+                  winnerPlayerNumber = i+1;
+                  break;
+              }
+          }
+
+          io.to(room).emit('gameFinished', winnerPlayerNumber);
 
       }
   }

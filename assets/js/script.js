@@ -223,7 +223,7 @@ $(function(){
 	});
 
 	socket.on('gameFinished', function (chosenWinner) {
-		alert("The game has finished! The winner is: " + chosenWinner);
+		alert("The game has finished! The winner is: " + "Player" + chosenWinner);
 		window.location.href = "http://130.225.170.90/"; //go to main page
 	});
 
