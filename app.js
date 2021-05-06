@@ -134,6 +134,15 @@ io.on('connection', (socket) => {
     var msg = data.msg;
     var text = "";
     var currentDrawingPlayer = roomDict[data.room].players[roomDict[data.room].currentPlayerTurn];
+    var playerNumber = 0;
+      for (var i = 0; i < roomDict[data.room].players.length; i++) {
+          if (socket.id == roomDict[data.room].players[i]){
+              playerNumber = i+1;
+              break;
+          }
+      }
+
+
       if (msg.includes("/g")) {
 
           if (socket.id == currentDrawingPlayer){ //current drawing player shouldnt be able to guess
@@ -142,13 +151,13 @@ io.on('connection', (socket) => {
               var guess = msg.substring(3);
               if (roomDict[data.room].currentThingToGuess != null) {
                   if (guess.toLowerCase() == roomDict[data.room].currentThingToGuess.toLowerCase()) { //guessed correct
-                      text = socket.id + " Guessed the correct word!: " + guess;
+                      text = "Player" + playerNumber + " Guessed the correct word!: " + guess;
                       text.fontcolor("green");
                       givePoints(socket.id, data.room);
                       changeTurn(data.room);
 
                   } else { //guessed wrong
-                      text = socket.id + " Guessed the following: " + guess;
+                      text = "Player" + playerNumber + " Guessed the following: " + guess;
                       text.fontcolor("red");
                   }
 
@@ -157,7 +166,7 @@ io.on('connection', (socket) => {
               }
           }
       }else{
-          text = msg;
+          text = "Player" + playerNumber + ": " + msg;
           io.to(data.room).emit('chat message', text);
       }
 
