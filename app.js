@@ -4,107 +4,93 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const static = require('node-static');
-const port = process.env.PORT || 3000;
-
-//EOW vi er nået hertil: Vi var igang med gætte systemet. Vi nåede et punkt hvor vi tænkte: er det clienten som skal checke om gættet er korrekt?
-// eller er det serveren? Vi testede derefter hvad der ville ske når clienten redigerede i javascriptet. Resultat: Clienten kunne få
-// serveren til at crashe ved at lave sine egne emits. Vi skal nu beslutte hvor meget vi skal lave om sådan at clienten ikke kan crashe serveren mere.
-//
-
-//EOW!! Næste gang skal vi spørge læreren om at det er nødvendigt at gå ind i så meget security som vi var ved.
-//Vil det være nok blot at nævne det til eksamen at man skal passe på med kode på client? Eller skal man rent faktisk
-// gå in og imlpementere en mere sikker kode for at få flere point????????
+const port = process.env.PORT || 3000; //running on port 3000
 
 
-
+//This class represents a single room and its state.
 class RoomController{
   constructor(players, playerScore, currentThingToGuess, amountOfPlayers, gameHasStarted, currentPlayerTurn, wordList, currentInterval, gameHasFinished){
-
-    this.players = players;
-    this.playerScore = playerScore;
+    this.players = players; // A list of player ids in the room.
+    this.playerScore = playerScore; // A list of objects where each object has a id->score pair.
     this.currentThingToGuess = currentThingToGuess;
     this.amountOfPlayers = amountOfPlayers;
     this.gameHasStarted = gameHasStarted;
     this.currentPlayerTurn = currentPlayerTurn;
     this.wordList = wordList;
-    this.currentInterval = currentInterval;
+    this.currentInterval = currentInterval; //The current countdown timer. This variable is used to ensure that we don't get to counters running at the same time.
     this.gameHasFinished = gameHasFinished;
   }
 }
 
-var roomDict = new Object();
-var maxPlayers = 3;
-
+var roomDict = new Object(); //The data structure that manages all game rooms. Is a JSON.
+var maxPlayers = 3; //The number of players needed to start a game.
 var finishPoints = 20; //points required to win the game
-
 var possibleWords = ["Elephant", "Airplane", "Pikachu", "House", "Stickman", "Beaver", "Piano", "Computer", "Bottle", "Watch", "Printer", "Witch", "Couch", "Chair", "Mouse", "Car", "Dinner", "Running", "Father", "Falling", "Mirror"];
 
-app.use(express.static(__dirname + '/assets'));
+app.use(express.static(__dirname + '/assets')); //Tells the app where our client side ressources are.
 
 app.get('/', (req, res) => {
-  //req.addListener('end', function (){fileServer.serve(request, response);})
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html'); //Send index.html as the main page.
 });
 
 app.get('/game.html', (req, res) => {
   res.sendFile(__dirname + '/game.html');
 });
 
+//When a new client joins.
 io.on('connection', (socket) => {
 
-  //console.log('a user connected');
-
-  //joining room
+  //When the client wants to join a room.
   socket.on('join', roomName => {
-
     var success = false;
 
+    //if no room with this name, then we create it.
     if(roomDict[roomName] == null){
       roomDict[roomName] = new RoomController(new Array(), new Array(), "", 1, false, 0, possibleWords, null,false);
       success = true;
     }else{
+      //we increment the number of players in the room. The client has not been assigned the room yet. (Done a bit further down)
       if (roomDict[roomName].amountOfPlayers != maxPlayers){
         roomDict[roomName].amountOfPlayers += 1;
         success = true;
       }else{
+          //the room is full
         io.to(socket.id).emit('full', true);
       }
     }
 
     if (success){
-      //console.log(roomName + " " + roomDict[roomName]);
-      socket.join(roomName);
+      socket.join(roomName); //This line is where we assign a room to the client.
 
       io.to(socket.id).emit('onJoinSuccess', true);
-      
+
+      //Updating the data of the room.
       roomDict[roomName].players.push(socket.id);
       roomDict[roomName].playerScore.push({'id':socket.id,'score':0});
 
+      //Updating info on the client side.
       updateInfo(roomName, true);
     }
 
   });
 
 
-
+  //When someone has disconnected completely.
   socket.on('disconnect', () => {
       console.log(roomDict);
-      //console.log(roomDict["rr"]);
   });
 
+  //When someone is about to disconnect.
   socket.on('disconnecting', function(){
-    //console.log("disconnecting...");
-    //console.log(socket.rooms); // the Set contains at least the socket ID
-    //console.log("socket id: " + socket.id);
+    //the room name is saved in a special way that requires us to use an interator to times to get the room name.
     const iterator = socket.rooms.values();
     iterator.next();
 
     var roomName = iterator.next().value;
-    //console.log("room: " + roomName);
 
     if (roomDict[roomName] != undefined && roomDict[roomName] != null){
       roomDict[roomName].amountOfPlayers -= 1;
-      if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName];
+      if (roomDict[roomName].amountOfPlayers == 0)delete roomDict[roomName]; //if room is empty we delete it.
       else{
           //removing from room
           //first removing from player array
@@ -120,19 +106,17 @@ io.on('connection', (socket) => {
                   io.to(roomName).emit('removeScore', socket.id);
               }
           }
-
-          //var data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'gameHasStarted':roomDict[roomName].gameHasStarted};
-          //io.to(roomName).emit('user left', data);
           updateInfo(roomName, false);
       }
     }
-
   });
 
+  //When server has received a chat message from a client.
   socket.on('chat message', (data) => {
     console.log('message: ' + data.msg);
     var msg = data.msg;
     var text = "";
+    //currentDrawingPlayer is later used to check if the drawing player is trying guess the word which is not allowed as he already knows the word.
     var currentDrawingPlayer = roomDict[data.room].players[roomDict[data.room].currentPlayerTurn];
     var playerNumber = 0;
       for (var i = 0; i < roomDict[data.room].players.length; i++) {
@@ -143,10 +127,10 @@ io.on('connection', (socket) => {
       }
 
 
-      if (msg.includes("/g")) {
+      if (msg.includes("/g")) { //the client is trying to guess.
 
           if (socket.id == currentDrawingPlayer){ //current drawing player shouldnt be able to guess
-              io.to(socket.id).emit('chat message', "You can't guess when you are the one drawing!");
+              io.to(socket.id).emit('chat message', "You can't guess when you are the one drawing!"); //Notice that this is only sent to one client and not all.
           }else{
               var guess = msg.substring(3);
               if (roomDict[data.room].currentThingToGuess != null) {
@@ -162,21 +146,23 @@ io.on('connection', (socket) => {
                   }
 
                   io.to(data.room).emit('chat message', text);
-                  checkFinishGame(data.room);
+                  checkFinishGame(data.room); //We check if the game has finished, in case the player has reached the max points.
               }
           }
-      }else{
+      }else{ //the message is not a guess.
           text = "Player" + playerNumber + ": " + msg;
           io.to(data.room).emit('chat message', text);
       }
 
   });
 
+    //Used to update info on the client
     function updateInfo(roomName, hasJoined){
         for (var i = 0; i < roomDict[roomName].players.length; i++) {
             var currentID = roomDict[roomName].players[i];
             var playerNumber = i + 1;
             var data;
+            //handled slightly differently based on wether the update happens when someone joins or leaves.
             if (hasJoined){
                 data = {'id':socket.id,'playerCount':roomDict[roomName].amountOfPlayers,'maxPlayers':maxPlayers, 'playerNumber': playerNumber};
                 io.to(currentID).emit('user joined', data);
@@ -187,10 +173,11 @@ io.on('connection', (socket) => {
         }
     }
 
+  //Used to give points to a user when he guesses correctly
   function givePoints(idOfGuesser, room){
       for (var i = 0; i < roomDict[room].playerScore.length; i++) {
           if (roomDict[room].playerScore[i].id == idOfGuesser){
-              roomDict[room].playerScore[i].score += 10;
+              roomDict[room].playerScore[i].score += 10; //the guesser gets 10 points
           }
 
           var currentDrawingPlayer = roomDict[room].players[roomDict[room].currentPlayerTurn];
@@ -206,6 +193,7 @@ io.on('connection', (socket) => {
       io.to(room).emit('updateScore', data);
   }
 
+  //Checks if the game has ended. Often used right after givePoints()
   function checkFinishGame(room){
       if (roomDict[room].gameHasFinished){
           var currentMaxPoints = null;
@@ -231,7 +219,7 @@ io.on('connection', (socket) => {
       }
   }
 
-
+  //When the game starts
   socket.on('start', data => {
     var room = data.room;
     if (roomDict[room].amountOfPlayers == maxPlayers && !roomDict[room].gameHasStarted){ //only run when the room is full and not already started
@@ -240,22 +228,21 @@ io.on('connection', (socket) => {
       changeTurn(room);
       var data1 = {'playerScores':roomDict[room].playerScore};
       io.to(room).emit('updateScore', data1);
-      //startTimer(room);
     }else{
       io.to(socket.id).emit('onStartFail');
     }
   });
 
+  //Handles showing all the clients cursors in real time.
   socket.on('mousemove', data => {
     var room = data.room;
     io.to(room).emit('moving',data);
-    //io.emit('moving', data);
   });
 
 });
 
 http.listen(port, () => {
-  //console.log(`Socket.IO server running at http://localhost:${port}/`);
+  console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
 
 io.sockets.on('connection', function (socket) {
@@ -264,6 +251,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('timer', { countdown: countdown });
   });
 });
+
 
 function changeTurn(roomName){
     if (roomDict[roomName] == undefined || roomDict[roomName] == null){
@@ -284,10 +272,10 @@ function changeTurn(roomName){
 
     io.to(roomName).emit('onNewTurn', data);
     if (roomDict[roomName].currentInterval != null){
-        clearInterval(roomDict[roomName].currentInterval);
+        clearInterval(roomDict[roomName].currentInterval); //If there is already a count down happening (like when a correct guess happens), we stop it.
     }
     startTimer(roomName);
-    //io.to(roomName).emit('onNewTurn', roomDict[roomName].players[currentTurn]);
+
 }
 
 function pickRandomWord(){
@@ -299,7 +287,7 @@ function startTimer(room){
     if (roomDict[room] == undefined || roomDict[room] == null){
         return;
     }
-    var countdown = 45;
+    var countdown = 45; //The max amount of time a turn may last.
     var interval = setInterval(function() {
         if (roomDict[room] == undefined || roomDict[room] == null)
         {
@@ -309,9 +297,7 @@ function startTimer(room){
         countdown--;
         io.to(room).emit('timer', { countdown: countdown });
         if (countdown == 0){
-            //clearInterval(interval);
             changeTurn(room);
-            //startTimer(room);
         }
     }, 1000);
     roomDict[room].currentInterval = interval;

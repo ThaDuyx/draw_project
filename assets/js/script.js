@@ -24,7 +24,6 @@ $(function(){
 	var clients = {};
 	var cursors = {};
 
-	//var socket = io.connect(url);
 	var socket = io();
 
 	//Getting room name
@@ -35,15 +34,15 @@ $(function(){
 
 	var myTurn = false;
 
-	var currentWord = null;
+	var currentWord = null; //the current word to guess
 
-	var timeoutTime = 100000;
+	var timeoutTime = 100000; //time of inactivity that leads to exit
 
 
 	socket.on('onJoinSuccess', function (e) {
 		console.log("Join successfull");
 
-		//hiding cursor
+		//hiding the real cursor to prevent having 2 cursors. (We use our own cursor which is visible to all players.)
 		document.body.style.cursor = 'none';
 	});
 
@@ -61,10 +60,6 @@ $(function(){
 		
 		// Is the user drawing?
 		if(data.drawing && clients[data.id]){
-			
-			// Draw a line on the canvas. clients[data.id] holds
-			// the previous position of this user's mouse pointer
-
 			console.log(canvas[0].offsetLeft + " and " + canvas[0].offsetTop);
 			drawLine(clients[data.id].x-canvas[0].offsetLeft, clients[data.id].y-canvas[0].offsetTop, data.x-canvas[0].offsetLeft, data.y-canvas[0].offsetTop);
 		}
@@ -83,8 +78,6 @@ $(function(){
 			prev.x = e.pageX;
 			prev.y = e.pageY;
 		}
-		// Hide the instructions
-		//instructions.fadeOut();
 	});
 	
 	doc.bind('mouseup mouseleave',function(){
@@ -109,8 +102,6 @@ $(function(){
 		// not received in the socket.on('moving') event above
 		
 		if(drawing){
-			
-			//drawLine(prev.x, prev.y, e.pageX, e.pageY);
 			prev.x = e.pageX;
 			prev.y = e.pageY;
 		}
@@ -122,7 +113,7 @@ $(function(){
 		for(ident in clients){
 			if($.now() - clients[ident].updated > timeoutTime){
 				
-				// Last update was more than 10 seconds ago. 
+				// Last update was more than the specified timeoutTime in seconds ago.
 				// This user has probably closed the page
 				
 				cursors[ident].remove();
@@ -139,12 +130,12 @@ $(function(){
 		ctx.lineTo(tox, toy);
 		ctx.stroke();
 		ctx.closePath();
-
 	}
 
 	var form = document.getElementById('form');
 	var input = document.getElementById('input');
 
+	//Sending chat messages
 	form.addEventListener('submit', function(e) {
 		e.preventDefault();
 		if (input.value) {
@@ -154,49 +145,50 @@ $(function(){
 				'room':room
 			});
 
-
-
-			//socket.emit('chat message', input.value);
 			input.value = '';
 		}
 	});
 
+	//receiving chat messages
 	socket.on('chat message', function(msg) {
 		createChatMessage(msg);
 	});
 
+	//Updating the count down timer
 	socket.on('timer', function (counter) {
 		$('#countDown').html(counter.countdown);
 	});
 
+	//When the game starts successfully
 	socket.on('onStartSuccess', function (e) {
 		var button = document.getElementById("startGame");
 		button.style.display = "none"; //hiding button
 	});
 
+	//when start has failed because there arent enough players
 	socket.on('onStartFail', function () {
 		alert("Failed, room has to be full before starting.");
 	});
 
+	//When someone joins and the room is already full
 	socket.on('full', function(e){
 	   //display alert
 		alert("Join failed: The room is full. You will be sent back to the previous page");
 		window.location.href = "http://130.225.170.90/"; //go to main page
-
     });
 
+	//When someone joins
 	socket.on('user joined', (data) => {
 		var message = "User joined: " + data.id;
-
 		updatePlayerNumber(data.playerNumber);
-
 		createChatMessage(message);
 		updatePlayerCount(data.playerCount, data.maxPlayers);
-
 	});
 
+	//When someone leaves
 	socket.on('user left', (data) => {
 		if (data.gameHasStarted){
+			//if game has already started when someone leaves, the game is cancelled for all player.
 			alert("Someone has left the game. You will be returned to the main screen.");
 			window.location.href = "http://130.225.170.90/"; //go to main page
 		}else{
@@ -207,53 +199,61 @@ $(function(){
 		}
 	});
 
+	//When it is the next turn
 	socket.on('onNewTurn', (data) => {
 		var currentPlayerID = data.currentPlayer;
 		currentWord = data.word;
 		isItMyTurn(currentPlayerID, currentWord);
-		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
+		ctx.clearRect(0, 0, canvas[0].width, canvas[0].height); //clearing canvas
 	});
 
+	//Used to update score
 	socket.on('updateScore', (data) =>{
 		updatePlayerScore(data);
 	});
 
+	//Used when someone leaves, before game has started, to remove his score ui.
 	socket.on('removeScore', function(id){
 		document.getElementById(id).remove();
 	});
 
+	//When game finishes
 	socket.on('gameFinished', function (chosenWinner) {
 		alert("The game has finished! The winner is: " + "Player" + chosenWinner);
 		window.location.href = "http://130.225.170.90/"; //go to main page
 	});
 
 
+	//When start-game button is pressed
 	$('#startGame').click(function() {
 		socket.emit('start',{
 			'room':room
 		});
 	});
 
+
+	//Used to create a chat message in the scrollable chat window.
 	function createChatMessage(msg) {
 		var item = document.createElement('li');
 		item.textContent = msg;
 		messages.appendChild(item);
-		//window.scrollTo(0, document.body.scrollHeight);
-		//this line caused problems on some computers where the whole page would jump up.
-		//removing it didn't change any behaviour of the program.
 	}
 
+	//Used to update the number that is used to identify a player.
 	function updatePlayerNumber(number){
 		document.getElementById("playerNumber").textContent = "Player" + number;
 	}
 
+	//Used to update all player scores.
 	function updatePlayerScore(data){
 		var scoreContainer = document.getElementById('playerScores');
 
+		//The scores are saved as an array of json object. Each object has a id->score pair.
 		var objectArray = data.playerScores;
 
 		for (var i = 0; i < objectArray.length; i++) {
 			var obj = objectArray[i];
+			//if we cant find an element with the object id, then we create it.
 			if (document.getElementById(obj.id) == null || document.getElementById(obj.id) == undefined ){
 				var item = document.createElement('li');
 				item.textContent = "Player" + (i+1) + " Score: " + obj.score;
@@ -265,11 +265,13 @@ $(function(){
 		}
 	}
 
+	//Used to update the number that represents the current amount of players in the game.
 	function updatePlayerCount(playerCount, maxPlayers){
 		var item = document.getElementById("numberOfPlayers");
 		item.textContent = playerCount + "/" + maxPlayers;
 	}
 
+	//Used to check if current turn is mine.
 	function isItMyTurn(id, word) {
 		var turnText = document.getElementById("turn");
 		var wordText = document.getElementById("word");
