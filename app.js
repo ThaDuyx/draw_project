@@ -1,10 +1,17 @@
-//const app = require('express')();
+
+//This project is built upon the foundations laid by the following tutorial: https://tutorialzine.com/2012/08/nodejs-drawing-game
+//Any code that we HAVEN'T made, is clearly labeled with TUTORIAL CODE STARTS/ENDS HERE.
+//Any modifications of ours INSIDE the tutorial code is labelled with MODIFICATION
+
+
+//TUTORIAL CODE STARTS HERE
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const static = require('node-static');
 const port = process.env.PORT || 3000; //running on port 3000
+//TUTORIAL CODE ENDS HERE
 
 
 //This class represents a single room and its state.
@@ -233,6 +240,7 @@ io.on('connection', (socket) => {
     }
   });
 
+
   //Handles showing all the clients cursors in real time.
   socket.on('mousemove', data => {
     var room = data.room;
@@ -241,6 +249,7 @@ io.on('connection', (socket) => {
 
 });
 
+//TUTORIAL CODE START HERE
 http.listen(port, () => {
   console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
@@ -251,6 +260,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('timer', { countdown: countdown });
   });
 });
+//TUTORIAL CODE ENDS HERE
 
 
 function changeTurn(roomName){

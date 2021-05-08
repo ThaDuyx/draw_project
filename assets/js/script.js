@@ -1,5 +1,11 @@
+
+//This project is built upon the foundations laid by the following tutorial: https://tutorialzine.com/2012/08/nodejs-drawing-game
+//Any code that we HAVEN'T made, is clearly labeled with TUTORIAL CODE STARTS/ENDS HERE.
+//Any modifications of ours INSIDE the tutorial code is labelled with MODIFICATION
+
 $(function(){
 
+	//TUTORIAL CODE STARTS HERE
 	// This demo depends on the canvas element
 	if(!('getContext' in document.createElement('canvas'))){
 		alert('Sorry, it looks like your browser does not support canvas!');
@@ -25,6 +31,7 @@ $(function(){
 	var cursors = {};
 
 	var socket = io();
+	//TUTORIAL CODE ENDS HERE
 
 	//Getting room name
 	var textFromIndex = window.location.search;
@@ -46,6 +53,7 @@ $(function(){
 		document.body.style.cursor = 'none';
 	});
 
+	//TUTORIAL CODE STARTS HERE
 	socket.on('moving', function (data) {
 		if(! (data.id in clients)){
 			// a new user has come online. create a cursor for them
@@ -73,7 +81,7 @@ $(function(){
 	
 	canvas.on('mousedown',function(e){
 		e.preventDefault();
-		if (myTurn){
+		if (myTurn){ //MODIFICATION   the if statement is an addition of ours.
 			drawing = true;
 			prev.x = e.pageX;
 			prev.y = e.pageY;
@@ -93,7 +101,7 @@ $(function(){
 				'y': e.pageY,
 				'drawing': drawing,
 				'id': id,
-				'room': room
+				'room': room //MODIFICATION  the room variable is an addition of ours
 			});
 			lastEmit = $.now();
 		}
@@ -131,6 +139,7 @@ $(function(){
 		ctx.stroke();
 		ctx.closePath();
 	}
+	//TUTORIAL CODE ENDS HERE
 
 	var form = document.getElementById('form');
 	var input = document.getElementById('input');
